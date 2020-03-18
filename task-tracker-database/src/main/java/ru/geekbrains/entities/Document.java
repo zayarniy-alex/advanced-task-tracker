@@ -4,15 +4,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
 @NoArgsConstructor
-@Table (name = "roles")
-public class Role {
+@Table (name = "documents")
+public class Document {
     @Id
     @GeneratedValue (strategy = IDENTITY)
     @Column (name = "id")
@@ -21,10 +20,15 @@ public class Role {
     @Column (name = "title")
     private String title;
 
-    @ManyToMany
-    @JoinTable (name = "users_roles",
-            joinColumns = @JoinColumn (name = "role_id"),
-            inverseJoinColumns = @JoinColumn (name = "user_id")
-    )
-    private List<User> users;
+    @Column (name = "description")
+    private String description;
+
+    @Column (name = "data")
+    private String data;
+
+    @Column (name = "object_id")
+    private Long object_id;
+
+    @Column (name = "object_type")
+    private String object_type;
 }

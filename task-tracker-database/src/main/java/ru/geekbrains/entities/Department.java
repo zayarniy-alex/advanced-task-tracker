@@ -11,8 +11,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Data
 @NoArgsConstructor
-@Table (name = "roles")
-public class Role {
+@Table (name = "departments")
+public class Department {
     @Id
     @GeneratedValue (strategy = IDENTITY)
     @Column (name = "id")
@@ -21,10 +21,12 @@ public class Role {
     @Column (name = "title")
     private String title;
 
-    @ManyToMany
-    @JoinTable (name = "users_roles",
-            joinColumns = @JoinColumn (name = "role_id"),
-            inverseJoinColumns = @JoinColumn (name = "user_id")
-    )
+    @Column (name = "head_id")
+    private Long head_id;
+
+    @Column (name = "up_department_id")
+    private Long up_department_id;
+
+    @OneToMany (mappedBy = "users")
     private List<User> users;
 }

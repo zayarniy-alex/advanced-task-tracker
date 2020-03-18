@@ -1,4 +1,0 @@
-flyway.url=
-flyway.schemas=task_tracker_db
-flyway.user=
-flyway.password=

@@ -1,6 +1,5 @@
 package ru.geekbrains.security.configuration;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -16,81 +15,60 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity (securedEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private UserDetailsService authService;
 
-public class SecurityConfig
-		extends WebSecurityConfigurerAdapter
-{
+    @Autowired
+    @Qualifier ("authService")
+    public void setAuthService(UserDetailsService service) {
+        authService = service;
+    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  private UserDetailsService authService;
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(authService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder builder) {
+        builder.authenticationProvider(authProvider());
+    }
 
-  @Autowired
-  @Qualifier("authService")
-  public void setAuthService(UserDetailsService service)
-  {
-	authService = service;
-  }
+    @Override
+    public void configure(WebSecurity web) {
+        WebSecurity.IgnoredRequestConfigurer conf = web.ignoring();
+        conf.antMatchers("/*.css");
+        conf.antMatchers("/*.js");
+    }
 
-
-  @Bean
-  public PasswordEncoder passwordEncoder()
-  {
-	return new BCryptPasswordEncoder();
-  }
-
-
-  @Bean
-  public DaoAuthenticationProvider authProvider()
-  {
-	DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-	provider.setUserDetailsService(authService);
-	provider.setPasswordEncoder(passwordEncoder());
-
-	return provider;
-  }
-
-
-  @Override
-  protected void configure(AuthenticationManagerBuilder builder)
-  {
-	builder.authenticationProvider(authProvider());
-  }
-
-
-  @Override
-  public void configure(WebSecurity web)
-  {
-	WebSecurity.IgnoredRequestConfigurer conf = web.ignoring();
-	conf.antMatchers("/*.css");
-	conf.antMatchers("/*.js");
-  }
-
-
-  @Override
-  protected void configure(HttpSecurity http)
-  throws Exception
-  {
-	http.authorizeRequests()
-		.antMatchers("/*").hasAnyRole("USER")
-		.and()
-		.formLogin()
-		.usernameParameter("username")
-		.passwordParameter("password")
-		.loginProcessingUrl("/auth")
-		.loginPage("/login")
-		.failureUrl("/loginfail")
-		.defaultSuccessUrl("/")
-		.permitAll()
-		.and()
-		.logout()
-		.logoutUrl("/logout")
-		.logoutSuccessUrl("/login")
-		.permitAll();
-  }
-
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/*").hasAnyRole("USER")
+                .and()
+                .formLogin()
+                .usernameParameter("login")
+                .passwordParameter("password")
+                .loginProcessingUrl("/auth")
+                .loginPage("/login")
+                .failureUrl("/loginfail")
+                .defaultSuccessUrl("/")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .permitAll();
+    }
 }

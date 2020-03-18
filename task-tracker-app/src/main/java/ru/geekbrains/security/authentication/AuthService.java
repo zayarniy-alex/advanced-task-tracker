@@ -1,6 +1,5 @@
 package ru.geekbrains.security.authentication;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,63 +19,46 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
+@Service ("authService")
+public class AuthService implements UserDetailsService {
+    private UserRepository userRepo;
+    private RoleRepository roleRepo;
+    private PasswordEncoder pswEncoder;
 
-@Service("authService")
-public class AuthService
-		implements UserDetailsService
-{
+    @Autowired
+    public void setUserRepository(UserRepository repo) {
+        userRepo = repo;
+    }
 
-  private UserRepository userRepo;
-  private RoleRepository roleRepo;
-  private PasswordEncoder pswEncoder;
+    @Autowired
+    public void setRoleRepository(RoleRepository repo) {
+        roleRepo = repo;
+    }
 
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder enc) {
+        pswEncoder = enc;
+    }
 
-  @Autowired
-  public void setUserRepository(UserRepository repo)
-  {
-	userRepo = repo;
-  }
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String login)
+            throws UsernameNotFoundException {
+        Optional<User> user = userRepo.findByUsername(login);
 
+        if (!user.isPresent())
+            throw new UsernameNotFoundException("Invalid login or password");
+        User usr = user.get();
+        String un = usr.getLogin();
+        String pw = usr.getPassword();
+        List<Role> roles = usr.getRoles();
+        List<GrantedAuthority> auths = mapRolesToAuthorities(roles);
+        return new org.springframework.security.core.userdetails.User(un, pw, auths);
+    }
 
-  @Autowired
-  public void setRoleRepository(RoleRepository repo)
-  {
-	roleRepo = repo;
-  }
-
-
-  @Autowired
-  public void setPasswordEncoder(PasswordEncoder enc)
-  {
-	pswEncoder = enc;
-  }
-
-
-  @Override
-  @Transactional
-  public UserDetails loadUserByUsername(String username)
-  throws UsernameNotFoundException
-  {
-	Optional<User> user = userRepo.findByUsername(username);
-
-	if (!user.isPresent())
-	  throw new UsernameNotFoundException("Invalid username or password");
-
-	User usr = user.get();
-	String un = usr.getUsername();
-	String pw = usr.getPassword();
-	List<Role> roles = usr.getRoles();
-	List<GrantedAuthority> auths = mapRolesToAuthorities(roles);
-
-	return new org.springframework.security.core.userdetails.User(un, pw, auths);
-  }
-
-
-  private List<GrantedAuthority> mapRolesToAuthorities(List<Role> roles)
-  {
-	return roles.stream()
-				.map(x -> new SimpleGrantedAuthority(x.getName()))
-				.collect(toList());
-  }
-
+    private List<GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
+        return roles.stream()
+                .map(x -> new SimpleGrantedAuthority(x.getTitle()))
+                .collect(toList());
+    }
 }
