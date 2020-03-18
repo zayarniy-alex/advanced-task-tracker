@@ -1,12 +1,13 @@
 package ru.geekbrains;
 
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 import static org.springframework.boot.SpringApplication.run;
 
 @SpringBootApplication
-@PropertySource ("classpath:private.properties")
+@PropertySource("file:src/main/resources/private.properties")
 public class TaskTrackerApplication {
     private static final Class<TaskTrackerApplication> APPLICATION_CLASS =
             TaskTrackerApplication.class;
