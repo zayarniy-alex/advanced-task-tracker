@@ -55,10 +55,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/*").hasAnyRole("USER")
+//                .antMatchers("/*").hasAnyRole("USER")
+                .antMatchers("/registration").not().fullyAuthenticated()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .usernameParameter("login")
+                .usernameParameter("username")
                 .passwordParameter("password")
                 .loginProcessingUrl("/auth")
                 .loginPage("/login")

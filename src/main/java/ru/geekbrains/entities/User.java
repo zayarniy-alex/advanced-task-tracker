@@ -1,11 +1,13 @@
 package ru.geekbrains.entities;
 
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -19,7 +21,7 @@ public class User {
     private Long id;
 
     @Column (name = "login")
-    private String login;
+    private String username;
 
     @Column (name = "password")
     private String password;
@@ -52,4 +54,10 @@ public class User {
             inverseJoinColumns = @JoinColumn (name = "project_id")
     )
     private List<Project> projects;
+
+
+    public void setRole(Role role) {
+        setRoles(singletonList(role));
+    }
+
 }
