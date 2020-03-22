@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div id="regbox" class="mainbox col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2">
+    <div class="panel panel-info">
+
+        <div class="panel-heading">
+            <div class="panel-title">Создание аккаунта</div>
+        </div>
+
+        <div class="panel-body">
+            <form th:action="@{/registration}" method="POST" th:object="${user}" class="form-horizontal">
+
+                <div th:if="${error}!=null" class="form-group col-xs-15">
+                    <div class="alert alert-danger col-xs-offset-1 col-xs-10">[[${error}]]</div>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" th:field="*{username}" placeholder="логин" autofocus class="form-control">
+                    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></p>
+
+                    <input type="password" th:field="*{password}" placeholder="пароль" class="form-control">
+                    <p>Пароль должен содержать хотя бы 1 заглавную букву, 1 цифру и 1 специальный символ</p>
+                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></p>
+
+                    <input type="password" th:field="*{matchingPassword}" placeholder="повторите пароль"
+                           class="form-control">
+
+                    <input type="text" th:field="*{firstname}" placeholder="имя" class="form-control">
+                    <p th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}" class="text-danger"></p>
+
+                    <input type="text" th:field="*{lastname}" placeholder="фамилия" class="form-control">
+                    <p th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" class="text-danger"></p>
+
+                    <input type="email" th:field="*{email}" placeholder="E-mail" class="form-control">
+                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></p>
+                </div>
+
+                <div class="form-group col-sm-6 controls">
+                    <button type="submit" class="btn btn-success">Зарегистрироваться</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
