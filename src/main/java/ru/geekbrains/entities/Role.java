@@ -27,4 +27,12 @@ public class Role {
             inverseJoinColumns = @JoinColumn (name = "user_id")
     )
     private List<User> users;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
