@@ -28,7 +28,8 @@
                     <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></p>
 
                     <input type="password" th:field="*{password}" placeholder="пароль" class="form-control">
-                    <p>Пароль должен содержать хотя бы 1 заглавную букву, 1 цифру и 1 специальный символ</p>
+                    <p>Пароль должен содержать хотя бы 1 заглавную букву, 1 цифру и 1 специальный символ
+                        и не должен содержать последовательности из 3 и более букв или цифр или входящих в "qwerty"</p>
                     <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></p>
 
                     <input type="password" th:field="*{matchingPassword}" placeholder="повторите пароль"
