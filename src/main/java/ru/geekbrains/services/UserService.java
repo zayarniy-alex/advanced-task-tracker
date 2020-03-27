@@ -20,7 +20,7 @@ public class UserService
   private UserRepository userRepo;
   private RoleRepository roleRepo;
   private PasswordEncoder pswEncoder;
-  private Role userRole;
+
   private static final String ROLE_PREFIX = "ROLE_";
   private static final String USER_ROLE_TITLE = ROLE_PREFIX + "USER";
 
@@ -48,8 +48,8 @@ public class UserService
 
   public void registrateUser(UserDTO user)
   {
-	if (!isExistUserRole())
-	  throw new UserRoleNotFoundInDB();
+	Role userRole = roleRepo.findByTitle(USER_ROLE_TITLE)
+							.orElseThrow(UserRoleNotFoundInDB::new);
 
 	User newUser = new User();
 	newUser.setUsername(user.username);
@@ -57,7 +57,7 @@ public class UserService
 	newUser.setPassword(pswhash);
 	newUser.setFirstname(user.firstname);
 	newUser.setLastname(user.lastname);
-	newUser.setEmail(user.email);
+	if (!user.email.isEmpty()) newUser.setEmail(user.email);
 	newUser.setRole(userRole);
 
 	userRepo.save(newUser);
@@ -71,18 +71,24 @@ public class UserService
   }
 
 
-  private boolean isExistUserRole()
+  public User getUser(String username)
   {
-	Optional<Role> role = roleRepo.findByTitle(USER_ROLE_TITLE);
-	if (role.isPresent())
-	{
-	  userRole = role.get();
-	  return true;
-	}
-	else
-	{
-	  return false;
-	}
+	return userRepo.findByUsername(username).orElseThrow(UserNotFoundException::new);
+  }
+
+
+  public boolean checkPassword(User user, String password)
+  {
+	String pwd = user.getPassword();
+	return pswEncoder.matches(password, pwd);
+  }
+
+
+  public void updatePassword(User user, String newPassword)
+  {
+	String pswhash = pswEncoder.encode(newPassword);
+	user.setPassword(pswhash);
+	userRepo.save(user);
   }
 
 
@@ -94,6 +100,13 @@ public class UserService
 	{
 	  super("роль " + USER_ROLE_TITLE + " отсутствует в БД");
 	}
+
+  }
+
+
+  private static class UserNotFoundException
+		  extends RuntimeException
+  {
 
   }
 
