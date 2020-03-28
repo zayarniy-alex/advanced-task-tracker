@@ -18,59 +18,52 @@ import java.util.Objects;
 
 
 @Controller
-@RequestMapping("/user")
-public class UserController
-{
+@RequestMapping ("/user")
+public class UserController {
 
-  private UserService userService;
-
-
-  @Autowired
-  public void setUserService(UserService service)
-  {
-	userService = service;
-  }
+    private UserService userService;
 
 
-  @ModelAttribute("password")
-  public UpdatePasswordDTO pwd()
-  {
-	return new UpdatePasswordDTO();
-  }
+    @Autowired
+    public void setUserService(UserService service) {
+        userService = service;
+    }
 
 
-  @GetMapping("/updatePassword")
-  public String changePasswordPage()
-  {
-	return "changePassword";
-  }
+    @ModelAttribute ("password")
+    public UpdatePasswordDTO pwd() {
+        return new UpdatePasswordDTO();
+    }
 
 
-  @PostMapping("/updatePassword")
-  @PreAuthorize("hasRole('USER')")
-  public String changeUserPassword(@ModelAttribute("password") @Valid UpdatePasswordDTO pwd,
-								   BindingResult bindRes, Model model)
-  {
-	if (bindRes.hasErrors()) return "changePassword";
+    @GetMapping ("/updatePassword")
+    public String changePasswordPage() {
+        return "changePassword";
+    }
 
-	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	User user = userService.getUser(auth.getName());
 
-	if (!userService.checkPassword(user, pwd.oldpassword))
-	{
-	  model.addAttribute("error", "Неверный старый пароль");
-	  return "changePassword";
-	}
-	if (!Objects.equals(pwd.newpassword, pwd.matchingPassword))
-	{
-	  model.addAttribute("error", "Повторенный пароль не совпадает с введенным");
-	  return "changePassword";
-	}
+    @PostMapping ("/updatePassword")
+    @PreAuthorize ("hasRole('USER')")
+    public String changeUserPassword(@ModelAttribute ("password") @Valid UpdatePasswordDTO pwd,
+                                     BindingResult bindRes, Model model) {
+        if (bindRes.hasErrors()) return "changePassword";
 
-	userService.updatePassword(user, pwd.newpassword);
-	model.addAttribute("success", "пароль успешно изменен");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUser(auth.getName());
 
-	return "changePassword";
-  }
+        if (!userService.checkPassword(user, pwd.oldpassword)) {
+            model.addAttribute("error", "Неверный старый пароль");
+            return "changePassword";
+        }
+        if (!Objects.equals(pwd.newpassword, pwd.matchingPassword)) {
+            model.addAttribute("error", "Повторенный пароль не совпадает с введенным");
+            return "changePassword";
+        }
+
+        userService.updatePassword(user, pwd.newpassword);
+        model.addAttribute("success", "пароль успешно изменен");
+
+        return "changePassword";
+    }
 
 }

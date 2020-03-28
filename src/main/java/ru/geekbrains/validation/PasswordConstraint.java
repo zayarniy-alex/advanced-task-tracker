@@ -10,16 +10,15 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 
-@Constraint(validatedBy = PasswordConstraintValidator.class)
-@Target({TYPE, FIELD, ANNOTATION_TYPE})
-@Retention(RUNTIME)
-public @interface PasswordConstraint
-{
+@Constraint (validatedBy = PasswordConstraintValidator.class)
+@Target ({TYPE, FIELD, ANNOTATION_TYPE})
+@Retention (RUNTIME)
+public @interface PasswordConstraint {
 
-  String message() default "некорректный пароль";
+    String message() default "некорректный пароль";
 
-  Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-  Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 
 }

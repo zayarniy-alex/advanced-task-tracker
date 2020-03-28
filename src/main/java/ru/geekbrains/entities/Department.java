@@ -26,7 +26,4 @@ public class Department {
 
     @Column (name = "up_department_id")
     private Long up_department_id;
-
-    @OneToMany (mappedBy = "users")
-    private List<User> users;
 }

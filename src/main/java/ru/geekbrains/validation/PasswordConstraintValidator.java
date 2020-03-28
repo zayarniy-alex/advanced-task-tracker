@@ -11,36 +11,33 @@ import static java.util.Arrays.asList;
 
 
 public class PasswordConstraintValidator
-		implements ConstraintValidator<PasswordConstraint, String>
-{
+        implements ConstraintValidator<PasswordConstraint, String> {
 
 
-  private static final List<Rule> RULES = asList(new LengthRule(8, 80),
-												 new UppercaseCharacterRule(1),
-												 new DigitCharacterRule(1),
-												 new SpecialCharacterRule(1),
-												 new NumericalSequenceRule(3, false),
-												 new AlphabeticalSequenceRule(3, false),
-												 new QwertySequenceRule(3, false),
-												 new WhitespaceRule());
+    private static final List<Rule> RULES = asList(new LengthRule(8, 80),
+            new UppercaseCharacterRule(1),
+            new DigitCharacterRule(1),
+            new SpecialCharacterRule(1),
+            new NumericalSequenceRule(3, false),
+            new AlphabeticalSequenceRule(3, false),
+            new QwertySequenceRule(3, false),
+            new WhitespaceRule());
 
 
-  @Override
-  public void initialize(PasswordConstraint annotation)
-  {
+    @Override
+    public void initialize(PasswordConstraint annotation) {
 
-  }
+    }
 
 
-  @Override
-  public boolean isValid(String password, ConstraintValidatorContext context)
-  {
-	PasswordValidator validator = new PasswordValidator(RULES);
-	PasswordData data = new PasswordData(password);
-	RuleResult result = validator.validate(data);
+    @Override
+    public boolean isValid(String password, ConstraintValidatorContext context) {
+        PasswordValidator validator = new PasswordValidator(RULES);
+        PasswordData data = new PasswordData(password);
+        RuleResult result = validator.validate(data);
 
-	if (result.isValid())
-	  return true;
+        if (result.isValid())
+            return true;
 
 //	List<String> messages = validator.getMessages(result);
 //	String template = String.join(",", messages);
@@ -50,7 +47,7 @@ public class PasswordConstraintValidator
 //			.buildConstraintViolationWithTemplate(template)
 //			.addConstraintViolation();
 
-	return false;
-  }
+        return false;
+    }
 
 }

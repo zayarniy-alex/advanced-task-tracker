@@ -13,58 +13,52 @@ import javax.validation.Valid;
 
 
 @Controller
-@RequestMapping("/registration")
-public class RegistrationController
-{
+@RequestMapping ("/registration")
+public class RegistrationController {
 
-  private UserService userService;
-  private static final String USERNAME_ERR_MSG = "Пользователь с таким именем уже существует";
-  private static final String PASSWORD_ERR_MSG = "Пароли не совпадают";
-
-
-  @Autowired
-  public void setUserService(UserService service)
-  {
-	userService = service;
-  }
+    private UserService userService;
+    private static final String USERNAME_ERR_MSG = "Пользователь с таким именем уже существует";
+    private static final String PASSWORD_ERR_MSG = "Пароли не совпадают";
 
 
-  @ModelAttribute("user")
-  public UserDTO user() {
-	return new UserDTO();
-  }
+    @Autowired
+    public void setUserService(UserService service) {
+        userService = service;
+    }
 
 
-  @GetMapping
-  public String registrationPage()
-  {
-	return "registration";
-  }
+    @ModelAttribute ("user")
+    public UserDTO user() {
+        return new UserDTO();
+    }
 
 
-  @PostMapping
-  public String registration(@ModelAttribute("user") @Valid UserDTO user,
-							 BindingResult bindRes, Model model)
-  {
-	if (bindRes.hasErrors())
-	  return "registration";
+    @GetMapping
+    public String registrationPage() {
+        return "registration";
+    }
 
-	if (userService.isExistUser(user))
-	{
-	  model.addAttribute("error", USERNAME_ERR_MSG);
-	  return "registration";
-	}
 
-	if (!user.password.equals(user.matchingPassword))
-	{
-	  model.addAttribute("error", PASSWORD_ERR_MSG);
-	  return "registration";
-	}
+    @PostMapping
+    public String registration(@ModelAttribute ("user") @Valid UserDTO user,
+                               BindingResult bindRes, Model model) {
+        if (bindRes.hasErrors())
+            return "registration";
 
-	userService.registrateUser(user);
+        if (userService.isExistUser(user)) {
+            model.addAttribute("error", USERNAME_ERR_MSG);
+            return "registration";
+        }
 
-	return "redirect:/";
-  }
+        if (!user.password.equals(user.matchingPassword)) {
+            model.addAttribute("error", PASSWORD_ERR_MSG);
+            return "registration";
+        }
+
+        userService.registrateUser(user);
+
+        return "redirect:/";
+    }
 
 
 }
