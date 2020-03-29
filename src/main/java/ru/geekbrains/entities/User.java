@@ -35,8 +35,12 @@ public class User {
     @Column (name = "email")
     private String email;
 
-    @Column (name = "department_id")
-    private Long department_id;
+//    @Column (name = "department_id")
+////    private Long department_id;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 
     @Column (name = "position")
     private String position;
