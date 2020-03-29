@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -56,14 +55,7 @@
                 <input th:field="*{plan_time}" type="number" class="form-control" placeholder="">
             </div>
         </div>
-        <div class="form-group">
-            <label>Срочность</label>
-            <select class="form-control" th:field="*{urgency}">
-                <option th:value="HIGH">HIGH</option>
-                <option th:value="MIDDLE">MIDDLE</option>
-                <option th:value="LOW">LOW</option>
-            </select>
-        </div>
+
 
 
         <div class="form-group">
