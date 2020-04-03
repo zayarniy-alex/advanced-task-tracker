@@ -3,10 +3,7 @@ package ru.geekbrains.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.entities.Task;
 import ru.geekbrains.services.ProjectService;
 import ru.geekbrains.services.TasksService;
@@ -46,7 +43,6 @@ public class TasksController {
 
     @GetMapping("/create")
     public String createTask(Model model, @ModelAttribute(name = "task") Task task) {
-
         model.addAttribute("urgencyList", task.getUrgency().values());
         model.addAttribute("statusList", task.getStatus().values());
         model.addAttribute("projectList", projectService.findAll());
@@ -55,7 +51,29 @@ public class TasksController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute(name = "task") Task task) {
+    public String addTask(@ModelAttribute(name = "task") Task task) {
+        tasksService.save(task);
+        return "redirect:/tasks/";
+    }
+
+    @GetMapping("/edit")
+    public String editTask(Model model, @RequestParam(name = "id", required = false) Long id) {
+        Task task = null;
+        if (id != null) {
+            task = tasksService.findById(id);
+        } else {
+            task = new Task();
+        }
+        model.addAttribute("task", task);
+        model.addAttribute("urgencyList", task.getUrgency().values());
+        model.addAttribute("statusList", task.getStatus().values());
+        model.addAttribute("projectList", projectService.findAll());
+        model.addAttribute("userList", userService.findAll());
+        return "edit-task";
+    }
+
+    @PostMapping("/edit")
+    public String saveModifiedProduct(@ModelAttribute(name = "task") Task task) {
         tasksService.save(task);
         return "redirect:/tasks/";
     }

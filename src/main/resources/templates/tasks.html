@@ -42,7 +42,9 @@
                 <td th:text="${task.status}"/>
                 <td th:text="${task.title}"/>
                 <td th:text="${#dates.format(task.due_time, 'dd.MM.yyyy')}"/>
-                <td></td>
+                <td>
+                    <a th:href="@{'/tasks/edit?id=' + ${task.id}}">Редактировать</a>
+                </td>
             </tr>
         </tbody>
     </table>

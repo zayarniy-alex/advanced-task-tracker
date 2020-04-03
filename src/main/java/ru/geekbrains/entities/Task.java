@@ -42,6 +42,7 @@ public class Task {
 
     @Column (name = "start_time")
     @CreationTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date start_time;
 
     @Column (name = "due_time")
