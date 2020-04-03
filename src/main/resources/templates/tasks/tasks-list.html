@@ -16,28 +16,38 @@
 <body>
 
 <div class="container">
+    <div th:replace="~{navigation :: navigation(Home)}"/>
 
 
     <h1>Список задач</h1>
 
     Полный контроль Ваших задач в однодном приложении!
-    <br><br><a th:href="@{'/tasks/create'}">Создать задачу</a><br>
+    <br><br>
+    <a th:href="@{'/tasks/create'}" class="btn btn-primary">Создать задачу</a>
+    <br><br>
 
     <table class="table table-hover" th:if="${tasks.size() > 0}">
         <thead class="thead-dark">
             <tr>
                 <th>Дата создания</th>
+                <th>Срочность</th>
+                <th>Статус</th>
                 <th>Наименование</th>
-                <th>Описание</th>
+                <th>Завершить</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="task : ${tasks}">
-                <td th:text="${task.start_time}"/>
+                <td th:text="${#dates.format(task.start_time, 'dd.MM.yyyy')}"/>
+                <td th:text="${task.urgency}"/>
+                <td th:text="${task.status}"/>
                 <td th:text="${task.title}"/>
-                <td th:text="${task.description}"/>
-                <td></td>
+                <td th:text="${#dates.format(task.due_time, 'dd.MM.yyyy')}"/>
+                <td>
+                    <a th:href="@{'/tasks/show?id=' + ${task.id}}">Просмотр</a><br>
+                    <a th:href="@{'/tasks/edit?id=' + ${task.id}}">Редактирование</a>
+                </td>
             </tr>
         </tbody>
     </table>

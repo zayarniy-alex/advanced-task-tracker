@@ -10,6 +10,7 @@ import ru.geekbrains.entities.User;
 import ru.geekbrains.repositories.RoleRepository;
 import ru.geekbrains.repositories.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -69,6 +70,13 @@ public class UserService {
         return userRepo.findByUsername(username).orElseThrow(UserNotFoundException::new);
     }
 
+    public List<User> findAll() {
+        return userRepo.findAll();
+    }
+
+    public User findById(Long id) {
+        return userRepo.findById(id).get();
+    }
 
     public boolean checkPassword(User user, String password) {
         String pwd = user.getPassword();
