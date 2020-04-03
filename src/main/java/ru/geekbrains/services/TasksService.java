@@ -1,6 +1,7 @@
 package ru.geekbrains.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.entities.Task;
 import ru.geekbrains.repositories.TasksRepository;
@@ -18,7 +19,7 @@ public class TasksService {
     }
 
     public List<Task> findAll() {
-        return tasksRepository.findAll();
+        return tasksRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public Task findById(Long id) {

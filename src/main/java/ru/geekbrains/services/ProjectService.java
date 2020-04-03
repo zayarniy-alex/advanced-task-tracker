@@ -20,4 +20,8 @@ public class ProjectService {
     public List<Project> findAll() {
         return projectRepository.findAll();
     }
+
+    public Project findById(Long id) {
+        return projectRepository.findById(id).get();
+    }
 }

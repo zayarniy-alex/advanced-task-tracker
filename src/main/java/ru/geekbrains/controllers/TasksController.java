@@ -38,7 +38,7 @@ public class TasksController {
     public String showTasks(Model model) {
         List<Task> tasksList = tasksService.findAll();
         model.addAttribute("tasks", tasksList);
-        return "tasks";
+        return "tasks/tasks-list";
     }
 
     @GetMapping("/create")
@@ -47,7 +47,7 @@ public class TasksController {
         model.addAttribute("statusList", task.getStatus().values());
         model.addAttribute("projectList", projectService.findAll());
         model.addAttribute("userList", userService.findAll());
-        return "create-task";
+        return "tasks/create-task";
     }
 
     @PostMapping("/add")
@@ -69,13 +69,28 @@ public class TasksController {
         model.addAttribute("statusList", task.getStatus().values());
         model.addAttribute("projectList", projectService.findAll());
         model.addAttribute("userList", userService.findAll());
-        return "edit-task";
+        return "tasks/edit-task";
     }
 
     @PostMapping("/edit")
     public String saveModifiedProduct(@ModelAttribute(name = "task") Task task) {
         tasksService.save(task);
         return "redirect:/tasks/";
+    }
+
+    @GetMapping("/show")
+    public String showTask(Model model, @RequestParam(name = "id") Long id) throws Exception {
+        Task task = null;
+        if (id != null) {
+            task = tasksService.findById(id);
+        } else {
+            throw new Exception("Id не указан");
+        }
+        model.addAttribute("task", task);
+        model.addAttribute("manager", userService.findById(task.getManager_id()));
+        model.addAttribute("employer", userService.findById(task.getEmployer_id()));
+        model.addAttribute("project", projectService.findById(task.getProject_id()));
+        return "tasks/show-task";
     }
 
 }

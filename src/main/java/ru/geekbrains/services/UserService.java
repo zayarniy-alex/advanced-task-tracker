@@ -74,6 +74,10 @@ public class UserService {
         return userRepo.findAll();
     }
 
+    public User findById(Long id) {
+        return userRepo.findById(id).get();
+    }
+
     public boolean checkPassword(User user, String password) {
         String pwd = user.getPassword();
         return pswEncoder.matches(password, pwd);
