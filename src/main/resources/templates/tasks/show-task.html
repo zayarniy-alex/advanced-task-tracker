@@ -30,8 +30,8 @@
             <p class="card-text">Срочность: <span th:text="${task.urgency}"></span></p>
             <p class="card-text">Статус: <span th:text="${task.status}"></span></p>
             <hr>
-            <p class="card-text">Постановщик: <span th:text="${manager.firstname}+' '+${manager.lastname}"></span></p>
-            <p class="card-text">Исполнитель: <span th:text="${employer.firstname}+' '+${employer.lastname}"></span></p>
+            <p class="card-text">Постановщик: <span th:text="${manager.firstname}+' '+${manager.lastname}+' ('+${manager.username}+')'"></span></p>
+            <p class="card-text">Исполнитель: <span th:text="${employer.firstname}+' '+${employer.lastname}+' ('+${employer.username}+')'"></span></p>
             <hr>
             <p class="card-text">Проект: <span th:text="${project.title}"></span></p>
             <hr>

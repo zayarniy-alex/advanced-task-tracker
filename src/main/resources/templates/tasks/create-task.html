@@ -32,12 +32,7 @@
 
             </div>
         <div class="form-row">
-            <div class="col form-group">
-                <label>Постановщик</label>
-                <select th:field="*{manager_id}">
-                    <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.firstname}+' '+${user.lastname}"></option>
-                </select>
-            </div>
+            <input th:field="*{manager_id}" type="hidden" class="form-control">
             <div class="col form-group">
                 <label>Исполнитель</label>
                 <select th:field="*{employer_id}">

@@ -1,10 +1,12 @@
 package ru.geekbrains.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.entities.Task;
+import ru.geekbrains.entities.User;
 import ru.geekbrains.services.ProjectService;
 import ru.geekbrains.services.TasksService;
 import ru.geekbrains.services.UserService;
@@ -34,6 +36,11 @@ public class TasksController {
         this.userService = userService;
     }
 
+    public org.springframework.security.core.userdetails.User getCurrentUser() {
+        return (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+
     @GetMapping("/")
     public String showTasks(Model model) {
         List<Task> tasksList = tasksService.findAll();
@@ -43,6 +50,7 @@ public class TasksController {
 
     @GetMapping("/create")
     public String createTask(Model model, @ModelAttribute(name = "task") Task task) {
+        task.setManager_id(userService.getUser(this.getCurrentUser().getUsername()).getId());
         model.addAttribute("urgencyList", task.getUrgency().values());
         model.addAttribute("statusList", task.getStatus().values());
         model.addAttribute("projectList", projectService.findAll());
@@ -64,6 +72,7 @@ public class TasksController {
         } else {
             task = new Task();
         }
+        model.addAttribute("editor", userService.getUser(this.getCurrentUser().getUsername()));
         model.addAttribute("task", task);
         model.addAttribute("urgencyList", task.getUrgency().values());
         model.addAttribute("statusList", task.getStatus().values());
