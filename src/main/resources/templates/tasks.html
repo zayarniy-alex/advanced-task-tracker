@@ -36,12 +36,13 @@
             </tr>
         </thead>
         <tbody>
+
             <tr th:each="task : ${tasks}">
-                <td th:text="${task.start_time}"/>
+                <td th:text="${#dates.format(task.start_time, 'dd.MM.yyyy')}"/>
                 <td th:text="${task.urgency}"/>
                 <td th:text="${task.status}"/>
                 <td th:text="${task.title}"/>
-                <td th:text="${task.due_time}"/>
+                <td th:text="${#dates.format(task.due_time, 'dd.MM.yyyy')}"/>
                 <td></td>
             </tr>
         </tbody>
