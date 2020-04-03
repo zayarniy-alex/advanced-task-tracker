@@ -16,11 +16,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table (name = "tasks")
 public class Task {
     public enum Status {
-        CREATED, PROCEEDED, COMPLETED, ARCHIVE
+        CREATED, ONGOING, COMPLETE, ARCHIVE
     }
 
     public enum Urgency {
-        HIGH, MIDDLE, LOW
+        HIGH, AVERAGE, LOW
     }
 
     @Id
@@ -49,9 +49,11 @@ public class Task {
     private Date due_time;
 
     @Column (name = "urgency")
+    @Enumerated(EnumType.STRING)
     private Urgency urgency;
 
     @Column (name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column (name = "progress")

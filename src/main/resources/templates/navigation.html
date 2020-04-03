@@ -23,6 +23,10 @@
                     th:classappend="${activeTab == 'Profile' ? 'active' : ''}">
                     <a class="nav-link" th:href="@{/profile}" th:text="#{nav.profile}"></a>
                 </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item"
+                    th:classappend="${activeTab == 'Tasks' ? 'active' : ''}">
+                    <a class="nav-link" th:href="@{/tasks/}" th:text="Tasks"></a>
+                </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
                     <form th:action="@{/logout}" method="POST">
                         <button id="navLogout" class="btn btn-outline-secondary" type="submit"

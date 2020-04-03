@@ -31,10 +31,11 @@ public class TasksController {
     }
 
     @GetMapping("/create")
-    public String createTask(@ModelAttribute(name = "task") Task task) {
-//        List<Task> tasksList = tasksService.findAll();
-//        model.addAttribute("tasks", tasksList);
-        //tasksService.save(task);
+    public String createTask(Model model, @ModelAttribute(name = "task") Task task) {
+
+        model.addAttribute("urgencyList", task.getUrgency().values());
+        model.addAttribute("statusList", task.getStatus().values());
+
         return "create-task";
     }
 

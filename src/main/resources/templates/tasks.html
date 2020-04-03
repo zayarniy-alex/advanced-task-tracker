@@ -28,8 +28,9 @@
         <thead class="thead-dark">
             <tr>
                 <th>Дата создания</th>
+                <th>Срочность</th>
+                <th>Статус</th>
                 <th>Наименование</th>
-                <th>Описание</th>
                 <th>Завершить</th>
                 <th></th>
             </tr>
@@ -37,8 +38,9 @@
         <tbody>
             <tr th:each="task : ${tasks}">
                 <td th:text="${task.start_time}"/>
+                <td th:text="${task.urgency}"/>
+                <td th:text="${task.status}"/>
                 <td th:text="${task.title}"/>
-                <td th:text="${task.description}"/>
                 <td th:text="${task.due_time}"/>
                 <td></td>
             </tr>
