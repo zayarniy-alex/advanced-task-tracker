@@ -16,6 +16,7 @@
 <body>
 
 <div class="container">
+    <div th:replace="~{navigation :: navigation(Home)}"/>
 
 
     <h1>Список задач</h1>
@@ -29,6 +30,7 @@
                 <th>Дата создания</th>
                 <th>Наименование</th>
                 <th>Описание</th>
+                <th>Завершить</th>
                 <th></th>
             </tr>
         </thead>
@@ -37,6 +39,7 @@
                 <td th:text="${task.start_time}"/>
                 <td th:text="${task.title}"/>
                 <td th:text="${task.description}"/>
+                <td th:text="${task.due_time}"/>
                 <td></td>
             </tr>
         </tbody>
