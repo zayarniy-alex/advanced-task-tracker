@@ -17,7 +17,6 @@
 <div class="container">
     <div th:replace="~{navigation :: navigation(Home)}"/>
 
-
     <h1>Создать задачу</h1>
 
     <form th:action="@{/tasks/add}" th:object="${task}" method="POST">
@@ -35,17 +34,18 @@
         <div class="form-row">
             <div class="col form-group">
                 <label>Постановщик</label>
-                <input th:field="*{manager_id}" type="number" class="form-control" placeholder="">
+                <select th:field="*{manager_id}">
+                    <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.firstname}+' '+${user.lastname}"></option>
+                </select>
             </div>
             <div class="col form-group">
                 <label>Исполнитель</label>
-                <input th:field="*{employer_id}" type="number" class="form-control" placeholder="">
+                <select th:field="*{employer_id}">
+                    <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.firstname}+' '+${user.lastname}"></option>
+                </select>
             </div>
         </div>
-            <div class="form-group">
-                <label>Проект</label>
-                <input th:field="*{project_id}" type="number" class="form-control" placeholder="">
-            </div>
+
         <div class="form-row">
             <div class="col form-group">
                 <label>Дата завершения</label>
@@ -61,6 +61,12 @@
             </div>
         </div>
         <div class="form-row">
+            <div class="col form-group">
+                <label>Проект</label>
+                <select th:field="*{project_id}">
+                    <option th:each="project : ${projectList}" th:value="${project.id}" th:text="${project.title}"></option>
+                </select>
+            </div>
             <div class="col form-group">
                 <label>Срочность</label>
                 <select th:field="*{urgency}">

@@ -36,7 +36,6 @@
             </tr>
         </thead>
         <tbody>
-
             <tr th:each="task : ${tasks}">
                 <td th:text="${#dates.format(task.start_time, 'dd.MM.yyyy')}"/>
                 <td th:text="${task.urgency}"/>
