@@ -2,6 +2,8 @@ package ru.geekbrains.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 
@@ -23,6 +25,8 @@ public class TaskHistory {
     private Long task_id;
 
     @Column (name = "change_date")
+    @CreationTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date change_date;
 
     @Column (name = "description")
