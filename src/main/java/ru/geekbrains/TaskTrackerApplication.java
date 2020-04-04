@@ -7,13 +7,13 @@ import org.springframework.context.annotation.PropertySource;
 import static org.springframework.boot.SpringApplication.run;
 
 @SpringBootApplication
-@PropertySource("file:src/main/resources/private.properties")
+@PropertySource ("file:src/main/resources/private.properties")
 public class TaskTrackerApplication {
     private static final Class<TaskTrackerApplication> APPLICATION_CLASS =
             TaskTrackerApplication.class;
 
     public static void main(String[] args) {
         run(APPLICATION_CLASS, args);
-//	out.println(PasswordEncoderGenerator.generate("123"));
+//	System.out.println(PasswordEncoderGenerator.generate("123"));
     }
 }

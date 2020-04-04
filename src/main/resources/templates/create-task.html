@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <title>Add task</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+
+    <h1>Add task</h1>
+
+    <form th:action="@{/tasks/add}" th:object="${task}" method="POST">
+
+            <div class="form-group">
+                <label>Наименование</label>
+                <input th:field="*{title}" type="text" class="form-control" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label>Подробности</label>
+                <textarea class="form-control" th:field="*{description}" type="text" rows="3"></textarea>
+
+            </div>
+        <div class="form-row">
+            <div class="col form-group">
+                <label>Постановщик</label>
+                <input th:field="*{manager_id}" type="number" class="form-control" placeholder="">
+            </div>
+            <div class="col form-group">
+                <label>Исполнитель</label>
+                <input th:field="*{employer_id}" type="number" class="form-control" placeholder="">
+            </div>
+        </div>
+            <div class="form-group">
+                <label>Проект</label>
+                <input th:field="*{project_id}" type="number" class="form-control" placeholder="">
+            </div>
+        <div class="form-row">
+            <div class="col form-group">
+                <label>Дата завершения</label>
+                <input th:field="*{due_time}" type="date" class="form-control" placeholder="">
+            </div>
+            <div class="col form-group">
+                <label>Планируемое время (в часах)</label>
+                <input th:field="*{plan_time}" type="number" class="form-control" placeholder="">
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+        </div>
+    </form>
+
+
+</div>
+</body>
+</html>

@@ -2,6 +2,8 @@ package ru.geekbrains.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -39,9 +41,11 @@ public class Task {
     private Long employer_id;
 
     @Column (name = "start_time")
+    @CreationTimestamp
     private Date start_time;
 
     @Column (name = "due_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date due_time;
 
     @Column (name = "urgency")
@@ -57,5 +61,5 @@ public class Task {
     private Long project_id;
 
     @Column (name = "plan_time")
-    private Date plan_time;
+    private Long plan_time;
 }

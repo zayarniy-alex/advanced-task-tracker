@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-
-    <title>Advanced task tracker</title>
-
-    <!--    <link rel="icon" type="image/png" th:href="@{/favicon.ico}"/>-->
-
+    <meta charset="utf-8"/>
+    <title>Advanced Task tracker</title>
+    <link rel="stylesheet" th:href="@{../static/css/stylesheet.css}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -19,9 +16,8 @@
 <div class="container">
     <div th:replace="~{navigation :: navigation(Home)}"/>
 
-    <h1>Advanced task tracker</h1>
-
-    Полный контроль Ваших задач в однодном приложении!
+    <h1>Advanced Task tracker</h1>
 </div>
+
 </body>
 </html>
