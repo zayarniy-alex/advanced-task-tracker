@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <title>Просмотр задачи</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <div th:replace="~{navigation :: navigation(Home)}"/>
+
+    <div class="card">
+        <h5 class="card-header">Просмотр задачи</h5>
+        <div class="card-body">
+            <h5 class="card-title" th:text="'#'+${task.id}+' '+${task.title}"></h5>
+            <p class="card-text">Дата создания: <span th:text="${#dates.format(task.start_time, 'dd.MM.yyyy')}"></span></p>
+            <p class="card-text">Завершить: <span th:text="${#dates.format(task.due_time, 'dd.MM.yyyy')}"></span></p>
+            <hr>
+            <p class="card-text">Планируемое время (в часах): <span th:text="${task.plan_time}"></span>ч</p>
+            <p class="card-text">Прогресс (в процентах): <span th:text="${task.progress}"></span>%</p>
+            <hr>
+            <p class="card-text">Срочность: <span th:text="${task.urgency}"></span></p>
+            <p class="card-text">Статус: <span th:text="${task.status}"></span></p>
+            <hr>
+            <p class="card-text">Постановщик: <span th:text="${manager.firstname}+' '+${manager.lastname}+' ('+${manager.username}+')'"></span></p>
+            <p class="card-text">Исполнитель: <span th:text="${employer.firstname}+' '+${employer.lastname}+' ('+${employer.username}+')'"></span></p>
+            <hr>
+            <p class="card-text">Проект: <span th:text="${project.title}"></span></p>
+            <hr>
+            <p class="card-text">Описание: <span th:text="${task.description}"></span></p>
+
+
+            <a th:href="@{'/tasks/edit?id=' + ${task.id}}" class="btn btn-primary">Редактировать</a>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
