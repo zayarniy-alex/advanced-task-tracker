@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.dto.UpdatePasswordDTO;
 import ru.geekbrains.entities.User;
+import ru.geekbrains.services.TasksService;
 import ru.geekbrains.services.UserService;
 
 import javax.validation.Valid;
@@ -22,6 +23,7 @@ import java.util.Objects;
 public class UserController {
 
     private UserService userService;
+    private TasksService tasksService;
 
 
     @Autowired
@@ -64,6 +66,22 @@ public class UserController {
         model.addAttribute("success", "пароль успешно изменен");
 
         return "changePassword";
+    }
+
+    @GetMapping("/userprofile/{id}")
+    public User getUserProfile(@PathVariable Long id){
+        return userService.findById(id);
+    }
+
+
+    @GetMapping("/userprofile/")
+    public User getUserProfileByName(String name){
+        return userService.getUser(name);
+    }
+
+    @GetMapping("/userprofile/")
+    public org.springframework.security.core.userdetails.User getCurrentUserProfile(){
+        return userService.getCurrentUser();
     }
 
 }

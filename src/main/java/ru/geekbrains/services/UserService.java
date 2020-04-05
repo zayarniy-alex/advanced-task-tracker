@@ -13,7 +13,6 @@ import ru.geekbrains.repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -111,22 +110,5 @@ public class UserService {
             extends RuntimeException {
 
     }
-
-
-    public Optional<UserDTO> findById(Long id){
-        return  userRepo.findById(id).map(UserDTO::new);
-    }
-
-    public List<UserDTO> findAll(){
-        return userRepo.findAll().stream()
-                .map(UserDTO::new)
-                .collect(Collectors.toList());
-    }
-
-    public void delete(Long id){
-        userRepo.deleteById(id);
-    }
-
-
 
 }
