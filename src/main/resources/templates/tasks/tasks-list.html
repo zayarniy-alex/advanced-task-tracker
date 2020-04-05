@@ -47,6 +47,7 @@
                 <td>
                     <a th:href="@{'/tasks/show?id=' + ${task.id}}">Просмотр</a><br>
                     <a th:href="@{'/tasks/edit?id=' + ${task.id}}">Редактирование</a>
+                    <a th:href="@{/documents(objId=${task.id},objType=TASK,mode=EDIT)}" class="btn btn-outline-dark" >Документы</a>
                 </td>
             </tr>
         </tbody>
