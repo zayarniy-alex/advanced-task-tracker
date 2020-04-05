@@ -1,10 +1,20 @@
 package ru.geekbrains.entities;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+@Data
+@NoArgsConstructor
 public class DocFilter {
     private Long idObject;
     private String typeObject;
     private String name;
     private String description;
+    @Id
     private Long id;
 
     public DocFilter(Long idObject, String typeObject){
@@ -13,43 +23,4 @@ public class DocFilter {
     }
 
 
-    public Long getIdObject() {
-        return idObject;
-    }
-
-    public void setIdObject(Long idObject) {
-        this.idObject = idObject;
-    }
-
-    public String getTypeObject() {
-        return typeObject;
-    }
-
-    public void setTypeObject(String typeObject) {
-        this.typeObject = typeObject;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

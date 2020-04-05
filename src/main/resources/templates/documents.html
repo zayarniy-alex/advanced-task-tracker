@@ -23,50 +23,50 @@
     <div class="panel-body">
 
         <div>
-            <a th:href="@{/document/create(objId=${objId},objType=${objType})}" class="form-group col-sm-6 controls btn btn-success" >Добавить документ</a>
+            <a th:href="@{/document/create(objId=${objId},objType=${objType})}" class="form-group col-sm-6 controls btn btn-primary" >Добавить документ</a>
         </div>
 
         <form name="filterForm" id="filterForm" th:action="@{/documents/filter(filter)}"  th:object="${filter}"  method="GET" class="form-horizontal">
-        <div>
-            <div class="form-inline">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon"></i></span>
-                    <input type="text" id="name" name="name" placeholder="Наименование" class="form-control">
+            <div>
+                <div class="form-inline">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon"></i></span>
+                        <input type="text" id="name" name="name" placeholder="Наименование" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon"></i></span>
+                        <input type="text" id="description" name="description" placeholder="Описание" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon"></i></span>
+                        <input type="text" id="id" name="id" placeholder="ИД" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Фильтровать</button>
                 </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon"></i></span>
-                    <input type="text" id="description" name="description" placeholder="Описание" class="form-control">
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon"></i></span>
-                    <input type="text" id="id" name="id" placeholder="ИД" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">Фильтровать</button>
+
+                <table id="documents" class="table table-hover" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>ИД</th>
+                        <th>Наименование</th>
+                        <th>Описание</th>
+                        <th class="actions">Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="doc : ${docs}">
+                        <td th:text="${doc.id}"></td>
+                        <td th:text="${doc.title}"></td>
+                        <td th:text="${doc.description}"></td>
+                        <td>
+                            <a th:href="@{document/open(id=${doc.id})}" class="btn btn-primary" role="button" aria-pressed="true">Открыть<i class="fa fa-fw fa-trash"></i></a>
+                            <a th:href="@{document/delete(id=${doc.id})}" class="btn btn-dark" role="button" aria-pressed="true">Удалить<i class="fa fa-fw fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
             </div>
-
-            <table id="documents" class="table table-hover" cellspacing="0" width="100%">
-                <thead>
-                <tr>
-                    <th>ИД</th>
-                    <th>Наименование</th>
-                    <th>Описание</th>
-                    <th class="actions">Действия</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="doc : ${docs}">
-                    <td th:text="${doc.id}"></td>
-                    <td th:text="${doc.title}"></td>
-                    <td th:text="${doc.description}"></td>
-                    <td>
-                        <a th:href="@{document/open(id=${doc.id})}" class="btn btn-success" role="button" aria-pressed="true">Open<i class="fa fa-fw fa-trash"></i></a>
-                        <a th:href="@{document/delete(id=${doc.id})}" class="btn btn-danger" role="button" aria-pressed="true">Delete<i class="fa fa-fw fa-trash"></i></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-        </div>
 
 
         </form>
