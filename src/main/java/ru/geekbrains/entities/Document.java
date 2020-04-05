@@ -24,11 +24,12 @@ public class Document {
     private String description;
 
     @Column (name = "data")
-    private String data;
+    private byte[] data;
 
     @Column (name = "object_id")
     private Long object_id;
 
     @Column (name = "object_type")
     private String object_type;
+
 }
