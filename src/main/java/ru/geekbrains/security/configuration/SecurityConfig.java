@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static ru.geekbrains.security.SecurityService.CHANGE_PASSWORD_PRIVILEGE;
+
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity (securedEnabled = true)
@@ -55,8 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-//                .antMatchers("/*").hasAnyRole("USER")
-                .antMatchers("/registration").not().fullyAuthenticated()
+                .antMatchers("/registration",
+                             "/user/resetPassword","/user/resetPassword/new").not().fullyAuthenticated()
+                .antMatchers("/user/resetPassword/save").hasAuthority(CHANGE_PASSWORD_PRIVILEGE)
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
