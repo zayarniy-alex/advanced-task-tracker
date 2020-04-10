@@ -10,6 +10,7 @@ import ru.geekbrains.services.TaskHistoryService;
 import ru.geekbrains.services.TasksService;
 import ru.geekbrains.services.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -49,8 +50,8 @@ public class TasksController {
     }
 
     @GetMapping("/create")
-    public String createTask(Model model, @ModelAttribute(name = "task") Task task) {
-        task.setManager_id(userService.getUser(userService.getCurrentUser().getUsername()).getId());
+    public String createTask(Model model, Principal principal, @ModelAttribute(name = "task") Task task) {
+        task.setManager_id(userService.getUser(principal.getName()).getId());
         model.addAttribute("urgencyList", task.getUrgency().values());
         model.addAttribute("statusList", task.getStatus().values());
         model.addAttribute("projectList", projectService.findAll());
@@ -65,14 +66,14 @@ public class TasksController {
     }
 
     @GetMapping("/edit")
-    public String editTask(Model model, @RequestParam(name = "id", required = false) Long id) {
+    public String editTask(Model model, Principal principal, @RequestParam(name = "id", required = false) Long id) {
         Task task = null;
         if (id != null) {
             task = tasksService.findById(id);
         } else {
             task = new Task();
         }
-        model.addAttribute("editor", userService.getUser(userService.getCurrentUser().getUsername()));
+        model.addAttribute("editor", userService.getUser(principal.getName()));
         model.addAttribute("task", task);
         model.addAttribute("urgencyList", task.getUrgency().values());
         model.addAttribute("statusList", task.getStatus().values());
@@ -82,8 +83,8 @@ public class TasksController {
     }
 
     @PostMapping("/edit")
-    public String saveModifiedProduct(@ModelAttribute(name = "task") Task task) {
-        tasksService.save(task);
+    public String saveModifiedProduct(@ModelAttribute(name = "task") Task task, Principal principal) {
+        tasksService.save(task, principal);
         return "redirect:/tasks/";
     }
 

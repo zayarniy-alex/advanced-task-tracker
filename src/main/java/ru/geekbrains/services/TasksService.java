@@ -7,6 +7,7 @@ import ru.geekbrains.entities.Task;
 import ru.geekbrains.entities.TaskHistory;
 import ru.geekbrains.repositories.TasksRepository;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -41,6 +42,10 @@ public class TasksService {
     }
 
     public Task save(Task task) {
+        return tasksRepository.save(task);
+    }
+
+    public Task save(Task task, Principal principal) {
 
         if (task.getId() != null) {
             TaskHistory taskHistory = new TaskHistory();
@@ -55,12 +60,12 @@ public class TasksService {
             }
 
             if (isEdited) {
-                description.insert(0, "Пользователь " + userService.getUser(userService.getCurrentUser().getUsername()).getFirstname()
-                        + " " + userService.getUser(userService.getCurrentUser().getUsername()).getLastname()
+                description.insert(0, "Пользователь " + userService.getUser(principal.getName()).getFirstname()
+                        + " " + userService.getUser(principal.getName()).getLastname()
                         + " внес изменения: ");
             }
             taskHistory.setDescription(description.toString());
-            taskHistory.setUser_id(userService.getUser(userService.getCurrentUser().getUsername()).getId());
+            taskHistory.setUser_id(userService.getUser(principal.getName()).getId());
             taskHistoryService.save(taskHistory);
         }
         return tasksRepository.save(task);
