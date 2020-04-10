@@ -24,7 +24,7 @@
 
     <hr>
     <h3 th:text="Фильтры"></h3>
-    <form th:action="@{/tasks}" method="GET">
+    <form th:action="@{/tasks/}" method="GET">
         <div class="form-row">
             <div class="col form-group">
                 <label>Проект</label>
@@ -39,7 +39,7 @@
                 <select name="urgency" class="form-control">
                     <option th:text="'Не выбрана'" th:value="null"/>
                     <option th:each="u : ${T(ru.geekbrains.entities.Task.Urgency).values()}" th:value="${u}" th:text="${u}"
-                            th:selected="${param.urgency != null && u.equals(param.urgency)}"/>
+                            th:selected="${param.urgency != null && u.toString() == param.urgency.toString()}"/>
                 </select>
             </div>
             <div class="col form-group">
@@ -47,7 +47,7 @@
                 <select name="status" class="form-control">
                     <option th:text="'Не выбран'" th:value="null"/>
                     <option th:each="s : ${T(ru.geekbrains.entities.Task.Status).values()}" th:value="${s}" th:text="${s}"
-                            th:selected="${param.status != null && s.equals(param.status)}"/>
+                            th:selected="${param.status != null && s.toString() == param.status.toString()}"/>
                 </select>
             </div>
         </div>
