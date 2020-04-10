@@ -2,7 +2,6 @@ package ru.geekbrains.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.dto.UserDTO;
@@ -83,10 +82,6 @@ public class UserService {
 
     public User getUser(String username) {
         return userRepo.findByUsername(username).orElseThrow(UserNotFoundException::new);
-    }
-
-    public org.springframework.security.core.userdetails.User getCurrentUser() {
-        return (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     public List<User> findAll() {
