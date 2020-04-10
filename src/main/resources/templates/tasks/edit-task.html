@@ -75,13 +75,13 @@
             <div class="col form-group">
                 <label>Срочность</label>
                 <select th:field="*{urgency}">
-                    <option th:each="u : ${urgencyList}" th:value="${u}" th:text="${u}"></option>
+                    <option th:each="u : ${T(ru.geekbrains.entities.Task.Urgency).values()}" th:value="${u}" th:text="${u}"></option>
                 </select>
             </div>
             <div class="col form-group">
                 <label>Статус</label>
                 <select th:field="*{status}">
-                    <option th:each="s : ${statusList}" th:value="${s}" th:text="${s}"></option>
+                    <option th:each="s : ${T(ru.geekbrains.entities.Task.Status).values()}" th:value="${s}" th:text="${s}"></option>
                 </select>
             </div>
         </div>

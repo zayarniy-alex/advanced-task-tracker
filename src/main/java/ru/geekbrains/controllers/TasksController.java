@@ -23,15 +23,6 @@ public class TasksController implements Serializable {
     private UserService userService;
     private TaskHistoryService taskHistoryService;
 
-//    @Autowired
-//    public TasksController(TasksService tasksService, ProjectService projectService, UserService userService, TaskHistoryService taskHistoryService) {
-//        this.tasksService = tasksService;
-//        this.projectService = projectService;
-//        this.userService = userService;
-//        this.taskHistoryService = taskHistoryService;
-//    }
-
-
     @Autowired
     public void setTasksService(TasksService tasksService) {
         this.tasksService = tasksService;
@@ -57,14 +48,13 @@ public class TasksController implements Serializable {
 
         List<Task> tasksList = tasksService.findByManager_idAndEmployer_id(userService.getUser(principal.getName()).getId());
         model.addAttribute("tasksList", tasksList);
+        model.addAttribute("projectList", projectService.findAll());
         return "tasks/tasks-list";
     }
 
     @GetMapping("/create")
     public String createTask(Model model, Principal principal, @ModelAttribute(name = "task") Task task) {
         task.setManager_id(userService.getUser(principal.getName()).getId());
-        model.addAttribute("urgencyList", task.getUrgency().values());
-        model.addAttribute("statusList", task.getStatus().values());
         model.addAttribute("projectList", projectService.findAll());
         model.addAttribute("userList", userService.findAll());
         return "tasks/create-task";
@@ -86,8 +76,6 @@ public class TasksController implements Serializable {
         }
         model.addAttribute("editor", userService.getUser(principal.getName()));
         model.addAttribute("task", task);
-        model.addAttribute("urgencyList", task.getUrgency().values());
-        model.addAttribute("statusList", task.getStatus().values());
         model.addAttribute("projectList", projectService.findAll());
         model.addAttribute("userList", userService.findAll());
         return "tasks/edit-task";

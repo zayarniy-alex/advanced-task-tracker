@@ -21,7 +21,42 @@
     <h1>Список задач</h1>
 
     Полный контроль Ваших задач в однодном приложении!
-    <br><br>
+
+    <hr>
+    <h3 th:text="Фильтры"></h3>
+    <form th:action="@{/tasks}" method="GET">
+        <div class="form-row">
+            <div class="col form-group">
+                <label>Проект</label>
+                <select name="project_id" class="form-control">
+                    <option th:text="'Не выбран'" th:value="null"/>
+                    <option th:each="p : ${projectList}" th:text="${p.title}" th:selected="${param.project_id != null && p.id.toString() == param.project_id.toString()}"
+                            th:value="${p.id}"/>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Срочность</label>
+                <select name="urgency" class="form-control">
+                    <option th:text="'Не выбрана'" th:value="null"/>
+                    <option th:each="u : ${T(ru.geekbrains.entities.Task.Urgency).values()}" th:value="${u}" th:text="${u}"
+                            th:selected="${param.urgency != null && u.equals(param.urgency)}"/>
+                </select>
+            </div>
+            <div class="col form-group">
+                <label>Статус</label>
+                <select name="status" class="form-control">
+                    <option th:text="'Не выбран'" th:value="null"/>
+                    <option th:each="s : ${T(ru.geekbrains.entities.Task.Status).values()}" th:value="${s}" th:text="${s}"
+                            th:selected="${param.status != null && s.equals(param.status)}"/>
+                </select>
+            </div>
+        </div>
+        <button type="submit" th:text="Применить" class="btn btn-warning"></button>
+        <a class="btn btn-warning" th:href="@{'/tasks/?p=1'}">Сбросить фильтр</a>
+    </form>
+    <hr>
+
+    <br>
     <a th:href="@{'/tasks/create'}" class="btn btn-primary">Создать задачу</a>
     <br><br>
 
