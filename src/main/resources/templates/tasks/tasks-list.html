@@ -31,6 +31,7 @@
             <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
+                    <th>ID</th>
                     <th>Дата создания</th>
                     <th>Срочность</th>
                     <th>Статус</th>
@@ -42,6 +43,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="task : ${tasksList}">
+                    <td th:text="'#' + ${task.id}"/>
                     <td th:text="${#dates.format(task.start_time, 'dd.MM.yyyy')}"/>
                     <td th:text="${task.urgency}"/>
                     <td th:text="${task.status}"/>
