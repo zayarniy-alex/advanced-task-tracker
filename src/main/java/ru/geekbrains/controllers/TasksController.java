@@ -10,35 +10,23 @@ import ru.geekbrains.services.TaskHistoryService;
 import ru.geekbrains.services.TasksService;
 import ru.geekbrains.services.UserService;
 
+import java.io.Serializable;
 import java.security.Principal;
 import java.util.List;
 
 @Controller
 @RequestMapping("/tasks")
-public class TasksController {
+public class TasksController implements Serializable {
 
     private TasksService tasksService;
     private ProjectService projectService;
     private UserService userService;
     private TaskHistoryService taskHistoryService;
 
-    @Autowired
-    public void setTasksService(TasksService tasksService) {
+    public TasksController(TasksService tasksService, ProjectService projectService, UserService userService, TaskHistoryService taskHistoryService) {
         this.tasksService = tasksService;
-    }
-
-    @Autowired
-    public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setTaskHistoryService(TaskHistoryService taskHistoryService) {
         this.taskHistoryService = taskHistoryService;
     }
 
@@ -66,12 +54,12 @@ public class TasksController {
     }
 
     @GetMapping("/edit")
-    public String editTask(Model model, Principal principal, @RequestParam(name = "id", required = false) Long id) {
+    public String editTask(Model model, Principal principal, @RequestParam(name = "id", required = false) Long id) throws Exception {
         Task task = null;
         if (id != null) {
             task = tasksService.findById(id);
         } else {
-            task = new Task();
+            throw new Exception("Id отсутствует");
         }
         model.addAttribute("editor", userService.getUser(principal.getName()));
         model.addAttribute("task", task);
