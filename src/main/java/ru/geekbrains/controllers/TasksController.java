@@ -23,10 +23,32 @@ public class TasksController implements Serializable {
     private UserService userService;
     private TaskHistoryService taskHistoryService;
 
-    public TasksController(TasksService tasksService, ProjectService projectService, UserService userService, TaskHistoryService taskHistoryService) {
+//    @Autowired
+//    public TasksController(TasksService tasksService, ProjectService projectService, UserService userService, TaskHistoryService taskHistoryService) {
+//        this.tasksService = tasksService;
+//        this.projectService = projectService;
+//        this.userService = userService;
+//        this.taskHistoryService = taskHistoryService;
+//    }
+
+
+    @Autowired
+    public void setTasksService(TasksService tasksService) {
         this.tasksService = tasksService;
+    }
+
+    @Autowired
+    public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setTaskHistoryService(TaskHistoryService taskHistoryService) {
         this.taskHistoryService = taskHistoryService;
     }
 
@@ -84,10 +106,12 @@ public class TasksController implements Serializable {
         } else {
             throw new Exception("Id не указан");
         }
+
         model.addAttribute("task", task);
         model.addAttribute("manager", userService.findById(task.getManager_id()));
         model.addAttribute("employer", userService.findById(task.getEmployer_id()));
         model.addAttribute("project", projectService.findById(task.getProject_id()));
+        model.addAttribute("taskHistory", taskHistoryService.findByTaskIdEquals(id));
         return "tasks/show-task";
     }
 
