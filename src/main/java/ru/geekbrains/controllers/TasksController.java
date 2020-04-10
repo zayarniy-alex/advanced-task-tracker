@@ -53,9 +53,10 @@ public class TasksController implements Serializable {
     }
 
     @GetMapping("/")
-    public String showTasks(Model model) {
-        List<Task> tasksList = tasksService.findAll();
-        model.addAttribute("tasks", tasksList);
+    public String showTasks(Model model, Principal principal) {
+
+        List<Task> tasksList = tasksService.findByManager_idAndEmployer_id(userService.getUser(principal.getName()).getId());
+        model.addAttribute("tasksList", tasksList);
         return "tasks/tasks-list";
     }
 
@@ -111,7 +112,7 @@ public class TasksController implements Serializable {
         model.addAttribute("manager", userService.findById(task.getManager_id()));
         model.addAttribute("employer", userService.findById(task.getEmployer_id()));
         model.addAttribute("project", projectService.findById(task.getProject_id()));
-        model.addAttribute("taskHistory", taskHistoryService.findByTaskIdEquals(id));
+        model.addAttribute("taskHistory", taskHistoryService.findByTaskId(id));
         return "tasks/show-task";
     }
 

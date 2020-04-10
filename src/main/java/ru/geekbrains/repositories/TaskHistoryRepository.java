@@ -12,5 +12,5 @@ import java.util.List;
 public interface TaskHistoryRepository extends JpaRepository<TaskHistory, Long> {
 
     @Query("select h from TaskHistory h where h.task_id = :task_id")
-    List<TaskHistory> findByTask_idEquals(@Param("task_id") Long id);
+    List<TaskHistory> findByTask_id(@Param("task_id") Long id);
 }

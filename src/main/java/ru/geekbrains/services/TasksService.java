@@ -49,6 +49,18 @@ public class TasksService {
         return tasksRepository.findById(id).get();
     }
 
+    public List<Task> findByManagerId(Long id) {
+        return tasksRepository.findByManager_id(id);
+    }
+
+    public List<Task> findByEmployerId(Long id) {
+        return tasksRepository.findByEmployer_id(id);
+    }
+
+    public List<Task> findByManager_idAndEmployer_id(Long id) {
+        return tasksRepository.findByManager_idAndEmployer_id(id);
+    }
+
     public Task save(Task task) {
         return tasksRepository.save(task);
     }

@@ -17,8 +17,8 @@ public class TaskHistoryService {
         this.taskHistoryRepository = taskHistoryRepository;
     }
 
-    public List<TaskHistory> findByTaskIdEquals(Long id) {
-        return taskHistoryRepository.findByTask_idEquals(id);
+    public List<TaskHistory> findByTaskId(Long id) {
+        return taskHistoryRepository.findByTask_id(id);
     }
 
     public TaskHistory save(TaskHistory taskHistory) {
