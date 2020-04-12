@@ -1,7 +1,10 @@
 package ru.geekbrains.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.entities.Project;
 import ru.geekbrains.entities.Task;
@@ -39,6 +42,10 @@ public class TasksService {
     @Autowired
     public void setTaskHistoryService(TaskHistoryService taskHistoryService) {
         this.taskHistoryService = taskHistoryService;
+    }
+
+    public Page<Task> findAllSpec(Specification<Task> spec, Pageable pageable) {
+        return tasksRepository.findAll(spec, pageable);
     }
 
     public List<Task> findAll() {

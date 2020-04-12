@@ -20,13 +20,48 @@
 
     <h1>Список задач</h1>
 
-    Полный контроль Ваших задач в однодном приложении!
-    <br><br>
+    Полный контроль Ваших задач в одном приложении!
+
+    <hr>
+    <h3 th:text="Фильтры"></h3>
+    <form th:action="@{/tasks/}" method="GET">
+        <div class="form-row">
+            <div class="col form-group">
+                <label>Проект</label>
+                <select name="project_id" class="form-control">
+                    <option th:text="'Не выбран'" th:value="null"/>
+                    <option th:each="p : ${projectList}" th:text="${p.title}" th:selected="${param.project_id != null && p.id.toString() == param.project_id.toString()}"
+                            th:value="${p.id}"/>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Срочность</label>
+                <select name="urgency" class="form-control">
+                    <option th:text="'Не выбрана'" th:value="null"/>
+                    <option th:each="u : ${T(ru.geekbrains.entities.Task.Urgency).values()}" th:value="${u}" th:text="${u}"
+                            th:selected="${param.urgency != null && u.toString() == param.urgency.toString()}"/>
+                </select>
+            </div>
+            <div class="col form-group">
+                <label>Статус</label>
+                <select name="status" class="form-control">
+                    <option th:text="'Не выбран'" th:value="null"/>
+                    <option th:each="s : ${T(ru.geekbrains.entities.Task.Status).values()}" th:value="${s}" th:text="${s}"
+                            th:selected="${param.status != null && s.toString() == param.status.toString()}"/>
+                </select>
+            </div>
+        </div>
+        <button type="submit" th:text="Применить" class="btn btn-warning"></button>
+        <a class="btn btn-warning" th:href="@{'/tasks/?p=1'}">Сбросить фильтр</a>
+    </form>
+    <hr>
+
+    <br>
     <a th:href="@{'/tasks/create'}" class="btn btn-primary">Создать задачу</a>
     <br><br>
 
-    <div class="card" th:if="${tasksList.size() > 0}">
-        <h5 class="card-header">Все ваши задачи</h5>
+    <div class="card" th:if="${page.content.size() > 0}">
+        <h5 class="card-header">Все задачи</h5>
         <div class="card-body">
             <table class="table table-hover">
                 <thead class="thead-dark">
@@ -42,7 +77,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="task : ${tasksList}">
+                <tr th:each="task : ${page.content}">
                     <td th:text="'#' + ${task.id}"/>
                     <td th:text="${#dates.format(task.start_time, 'dd.MM.yyyy')}"/>
                     <td th:text="${task.urgency}"/>
@@ -61,6 +96,23 @@
             </table>
         </div>
     </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{'/tasks/?p='+ ${page.previousOrFirstPageable().getPageNumber() + 1} + ${filtersDef}}">Предыдущая</a>
+            </li>
+            <li class="page-item" th:classappend="${page.getNumber() + 1 == i ? 'active' : ''}"
+                th:each="i : ${#numbers.sequence(1, page.getTotalPages())}">
+                <a class="page-link" th:text="${i}" th:href="@{'/tasks/?p=' + ${i} + ${filtersDef}}"></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{'/tasks/?p='+ ${page.nextOrLastPageable().getPageNumber() + 1} + ${filtersDef}}">Следующая</a>
+            </li>
+        </ul>
+    </nav>
 
 </div>
 </body>

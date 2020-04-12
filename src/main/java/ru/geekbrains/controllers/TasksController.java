@@ -1,6 +1,9 @@
 package ru.geekbrains.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +12,12 @@ import ru.geekbrains.services.ProjectService;
 import ru.geekbrains.services.TaskHistoryService;
 import ru.geekbrains.services.TasksService;
 import ru.geekbrains.services.UserService;
+import ru.geekbrains.utils.TaskFilter;
 
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/tasks")
@@ -22,15 +27,6 @@ public class TasksController implements Serializable {
     private ProjectService projectService;
     private UserService userService;
     private TaskHistoryService taskHistoryService;
-
-//    @Autowired
-//    public TasksController(TasksService tasksService, ProjectService projectService, UserService userService, TaskHistoryService taskHistoryService) {
-//        this.tasksService = tasksService;
-//        this.projectService = projectService;
-//        this.userService = userService;
-//        this.taskHistoryService = taskHistoryService;
-//    }
-
 
     @Autowired
     public void setTasksService(TasksService tasksService) {
@@ -53,18 +49,29 @@ public class TasksController implements Serializable {
     }
 
     @GetMapping("/")
-    public String showTasks(Model model, Principal principal) {
+    public String showTasks(Model model, Principal principal, @RequestParam Map<String, String> params) {
 
-        List<Task> tasksList = tasksService.findByManager_idAndEmployer_id(userService.getUser(principal.getName()).getId());
-        model.addAttribute("tasksList", tasksList);
+        int pageIndex = 0;
+        if (params.containsKey("p")) {
+            pageIndex = Integer.parseInt(params.get("p")) - 1;
+        }
+
+        params.put("manager_id", userService.getUser(principal.getName()).getId().toString());
+        params.put("employer_id", userService.getUser(principal.getName()).getId().toString());
+
+        Pageable pageRequest = PageRequest.of(pageIndex, 10);
+        TaskFilter taskFilter = new TaskFilter(params);
+        Page<Task> page = tasksService.findAllSpec(taskFilter.getSpec(), pageRequest);
+
+        model.addAttribute("projectList", projectService.findAll());
+        model.addAttribute("filtersDef", taskFilter.getFilterDefinition());
+        model.addAttribute("page", page);
         return "tasks/tasks-list";
     }
 
     @GetMapping("/create")
     public String createTask(Model model, Principal principal, @ModelAttribute(name = "task") Task task) {
         task.setManager_id(userService.getUser(principal.getName()).getId());
-        model.addAttribute("urgencyList", task.getUrgency().values());
-        model.addAttribute("statusList", task.getStatus().values());
         model.addAttribute("projectList", projectService.findAll());
         model.addAttribute("userList", userService.findAll());
         return "tasks/create-task";
@@ -86,8 +93,6 @@ public class TasksController implements Serializable {
         }
         model.addAttribute("editor", userService.getUser(principal.getName()));
         model.addAttribute("task", task);
-        model.addAttribute("urgencyList", task.getUrgency().values());
-        model.addAttribute("statusList", task.getStatus().values());
         model.addAttribute("projectList", projectService.findAll());
         model.addAttribute("userList", userService.findAll());
         return "tasks/edit-task";
