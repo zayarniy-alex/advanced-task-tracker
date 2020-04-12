@@ -54,6 +54,10 @@ public class TasksService {
         this.taskHistoryService = taskHistoryService;
     }
 
+    public Page<Task> findAllSpec(Specification<Task> spec, Pageable pageable) {
+        return tasksRepository.findAll(spec, pageable);
+    }
+
     public List<Task> findAll() {
         return tasksRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
