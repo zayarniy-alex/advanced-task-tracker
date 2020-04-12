@@ -28,11 +28,11 @@ public class DocController {
         this.documentRepository=documentRepository;
     }
 
-
-    @GetMapping(value="/documents{objId}{objType}{mode}")
+    @GetMapping(value="/documents")
     public String docsPage(Model model,
-                           @RequestParam("objId") Long idObject, @RequestParam("objType") String typeObject,@PathVariable("mode") String mode)
+                           @RequestParam("objId") Long idObject, @RequestParam("objType") String typeObject,@RequestParam("mode") String mode)
     {
+        model.addAttribute("activePage", "Documents");
         model.addAttribute("objId",idObject);
         model.addAttribute("objType",typeObject);
         model.addAttribute("docs", documentRepository.findByObject(typeObject,idObject));
@@ -45,30 +45,32 @@ public class DocController {
     @GetMapping(value="/documents/filter")
     public String docsFilter(Model model,
                              @ModelAttribute("filter") DocFilter filter
-                             )
-    {   filter.setTypeObject(localFilter.getTypeObject());
+    )
+    {
+        model.addAttribute("activePage", "Documents");
+        filter.setTypeObject(localFilter.getTypeObject());
         filter.setIdObject(localFilter.getIdObject());
         if (filter.getDescription().isEmpty())
             filter.setDescription(null);
         if (filter.getName().isEmpty())
             filter.setName(null);
-        model.addAttribute("objId",localFilter.getIdObject());
-        model.addAttribute("objType",localFilter.getTypeObject());
+        model.addAttribute("objId",filter.getIdObject());
+        model.addAttribute("objType",filter.getTypeObject());
         model.addAttribute("docs", documentRepository.findByObjectFilter(filter.getTypeObject(),filter.getIdObject(),filter.getName(),filter.getDescription(),filter.getId()));
         return "documents";
     }
 
-    @GetMapping(value="/document/create{objId}{objType}")
-        public String createDocument(Model model, @RequestParam("objId") Long idObject, @RequestParam("objType")  String typeObject) {
-            model.addAttribute("create", true);
-            model.addAttribute("activePage", "Documents");
-            model.addAttribute("objId",idObject);
-            model.addAttribute("objType",typeObject);
-            model.addAttribute("document", new Document());
-            return "document";
+    @GetMapping(value="/document/create")
+    public String createDocument(Model model, @RequestParam("objId") Long idObject, @RequestParam("objType")  String typeObject) {
+        model.addAttribute("create", true);
+        model.addAttribute("activePage", "Documents");
+        model.addAttribute("objId",idObject);
+        model.addAttribute("objType",typeObject);
+        model.addAttribute("document", new Document());
+        return "document";
     }
 
-    @GetMapping(value="/document/delete{id}")
+    @GetMapping(value="/document/delete")
     public String deleteDocument(Model model, @RequestParam("id") Long id) {
         model.addAttribute("activePage", "Documents");
         Document document=documentRepository.findById(id).get();
@@ -76,7 +78,7 @@ public class DocController {
         return "redirect:/documents?objId="+document.getObject_id()+"&objType="+document.getObject_type()+"&mode=EDIT";
     }
 
-    @GetMapping(value="/document/open{id}")
+    @GetMapping(value="/document/open")
     public ResponseEntity<byte[]> openDocument(Model model, @RequestParam("id") Long id) {
         model.addAttribute("activePage", "Documents");
         Document document=documentRepository.findById(id).get();
@@ -100,8 +102,8 @@ public class DocController {
     }
 
     @PostMapping("/document/save")
-        public String saveDocument(Model model, RedirectAttributes redirectAttributes, Document document, @RequestParam("fileData") MultipartFile file) throws IOException {
-           model.addAttribute("activePage", "Documents");
+    public String saveDocument(Model model, RedirectAttributes redirectAttributes, Document document, @RequestParam("fileData") MultipartFile file) throws IOException {
+        model.addAttribute("activePage", "Documents");
         model.addAttribute("objId",document.getObject_id());
         model.addAttribute("objType",document.getObject_type());
         model.addAttribute("mode","EDIT");
@@ -109,16 +111,16 @@ public class DocController {
         document.setTitle(file.getOriginalFilename());
         document.setData(file.getBytes());
 
-           try {
-               documentRepository.save(document);
-           } catch (Exception ex) {
-               redirectAttributes.addFlashAttribute("error", true);
-               if (document.getId() == null) {
-                   return "redirect:/document/create";
-               }
-               return "redirect:/document/" + document.getId() + "/edit";
-           }
-           return "redirect:/documents?objId="+document.getObject_id()+"&objType="+document.getObject_type()+"&mode=EDIT";
+        try {
+            documentRepository.save(document);
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("error", true);
+            if (document.getId() == null) {
+                return "redirect:/document/create";
+            }
+            return "redirect:/document/" + document.getId() + "/edit";
+        }
+        return "redirect:/documents?objId="+document.getObject_id()+"&objType="+document.getObject_type()+"&mode=EDIT";
     }
 
 }

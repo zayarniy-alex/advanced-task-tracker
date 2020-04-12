@@ -14,10 +14,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Table (name = "comments")
 public class Comment {
-    public enum CommentType {
-        SIMPLE, PERSONAL, GENERAL
-    }
-
     @Id
     @GeneratedValue (strategy = IDENTITY)
     @Column (name = "id")
@@ -26,11 +22,8 @@ public class Comment {
     @Column (name = "data")
     private String data;
 
-    @Column (name = "object_type")
-    private String object_type;
-
-    @Column (name = "object_id")
-    private Long object_id;
+    @Column (name = "task_id")
+    private Long task_id;
 
     @Column (name = "author_id")
     private Long author_id;
@@ -38,6 +31,8 @@ public class Comment {
     @Column (name = "date_create")
     private Date date_create;
 
-    @Column (name = "comment_type")
-    private CommentType comment_type;
+    @OneToOne
+    @JoinColumn(name = "author_id", insertable=false, updatable=false)
+    private User user;
+
 }
