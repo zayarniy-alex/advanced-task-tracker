@@ -63,10 +63,7 @@ public class TasksController implements Serializable {
         TaskFilter taskFilter = new TaskFilter(params);
         Page<Task> page = tasksService.findAllSpec(taskFilter.getSpec(), pageRequest);
 
-        //List<Task> tasksList = tasksService.findByManager_idAndEmployer_id(userService.getUser(principal.getName()).getId());
-        //model.addAttribute("tasksList", tasksList);
         model.addAttribute("projectList", projectService.findAll());
-
         model.addAttribute("filtersDef", taskFilter.getFilterDefinition());
         model.addAttribute("page", page);
         return "tasks/tasks-list";
