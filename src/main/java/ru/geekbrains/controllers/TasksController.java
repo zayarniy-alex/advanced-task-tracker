@@ -1,6 +1,9 @@
 package ru.geekbrains.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +12,12 @@ import ru.geekbrains.services.ProjectService;
 import ru.geekbrains.services.TaskHistoryService;
 import ru.geekbrains.services.TasksService;
 import ru.geekbrains.services.UserService;
+import ru.geekbrains.utils.TaskFilter;
 
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/tasks")
@@ -44,11 +49,26 @@ public class TasksController implements Serializable {
     }
 
     @GetMapping("/")
-    public String showTasks(Model model, Principal principal) {
+    public String showTasks(Model model, Principal principal, @RequestParam Map<String, String> params) {
 
-        List<Task> tasksList = tasksService.findByManager_idAndEmployer_id(userService.getUser(principal.getName()).getId());
-        model.addAttribute("tasksList", tasksList);
+        int pageIndex = 0;
+        if (params.containsKey("p")) {
+            pageIndex = Integer.parseInt(params.get("p")) - 1;
+        }
+
+        params.put("manager_id", userService.getUser(principal.getName()).getId().toString());
+        params.put("employer_id", userService.getUser(principal.getName()).getId().toString());
+
+        Pageable pageRequest = PageRequest.of(pageIndex, 10);
+        TaskFilter taskFilter = new TaskFilter(params);
+        Page<Task> page = tasksService.findAllSpec(taskFilter.getSpec(), pageRequest);
+
+        //List<Task> tasksList = tasksService.findByManager_idAndEmployer_id(userService.getUser(principal.getName()).getId());
+        //model.addAttribute("tasksList", tasksList);
         model.addAttribute("projectList", projectService.findAll());
+
+        model.addAttribute("filtersDef", taskFilter.getFilterDefinition());
+        model.addAttribute("page", page);
         return "tasks/tasks-list";
     }
 

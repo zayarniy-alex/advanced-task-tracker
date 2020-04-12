@@ -20,7 +20,7 @@
 
     <h1>Список задач</h1>
 
-    Полный контроль Ваших задач в однодном приложении!
+    Полный контроль Ваших задач в одном приложении!
 
     <hr>
     <h3 th:text="Фильтры"></h3>
@@ -60,7 +60,7 @@
     <a th:href="@{'/tasks/create'}" class="btn btn-primary">Создать задачу</a>
     <br><br>
 
-    <div class="card" th:if="${tasksList.size() > 0}">
+    <div class="card" th:if="${page.content.size() > 0}">
         <h5 class="card-header">Все задачи</h5>
         <div class="card-body">
             <table class="table table-hover">
@@ -77,7 +77,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="task : ${tasksList}">
+                <tr th:each="task : ${page.content}">
                     <td th:text="'#' + ${task.id}"/>
                     <td th:text="${#dates.format(task.start_time, 'dd.MM.yyyy')}"/>
                     <td th:text="${task.urgency}"/>
@@ -96,6 +96,23 @@
             </table>
         </div>
     </div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{'/tasks/?p='+ ${page.previousOrFirstPageable().getPageNumber() + 1} + ${filtersDef}}">Предыдущая</a>
+            </li>
+            <li class="page-item" th:classappend="${page.getNumber() + 1 == i ? 'active' : ''}"
+                th:each="i : ${#numbers.sequence(1, page.getTotalPages())}">
+                <a class="page-link" th:text="${i}" th:href="@{'/tasks/?p=' + ${i} + ${filtersDef}}"></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{'/tasks/?p='+ ${page.nextOrLastPageable().getPageNumber() + 1} + ${filtersDef}}">Следующая</a>
+            </li>
+        </ul>
+    </nav>
 
 </div>
 </body>
