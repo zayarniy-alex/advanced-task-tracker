@@ -3,18 +3,21 @@ package ru.geekbrains.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.entities.Project;
 import ru.geekbrains.entities.Task;
 import ru.geekbrains.entities.TaskHistory;
 import ru.geekbrains.entities.User;
+import ru.geekbrains.events.TaskCreatedEvent;
 import ru.geekbrains.repositories.TasksRepository;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class TasksService {
@@ -23,6 +26,13 @@ public class TasksService {
     private UserService userService;
     private ProjectService projectService;
     private TaskHistoryService taskHistoryService;
+
+    private ApplicationEventPublisher eventPub;
+
+    @Autowired
+    public void setEventPub(ApplicationEventPublisher eventPub) {
+        this.eventPub = eventPub;
+    }
 
     @Autowired
     public void setTasksRepository(TasksRepository tasksRepository) {
@@ -68,10 +78,14 @@ public class TasksService {
         return tasksRepository.findByManager_idAndEmployer_id(id);
     }
 
-    public Task save(Task task) {
-        return tasksRepository.save(task);
+    @Transactional
+    public void save(Task task) {
+        tasksRepository.save(task);
+        TaskCreatedEvent event = new TaskCreatedEvent(task);
+        eventPub.publishEvent(event);
     }
 
+    @Transactional
     public Task save(Task task, Principal principal) {
 
         if (task.getId() != null) {

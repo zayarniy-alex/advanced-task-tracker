@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.Properties;
 
@@ -15,6 +16,7 @@ import static ru.geekbrains.config.MailSenderConfig.*;
 
 @SpringBootApplication
 @PropertySource ("file:src/main/resources/private.properties")
+@EnableAsync
 public class TaskTrackerApplication {
     private static final Class<TaskTrackerApplication> APPLICATION_CLASS =
             TaskTrackerApplication.class;
