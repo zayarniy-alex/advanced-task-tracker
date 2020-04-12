@@ -24,7 +24,9 @@ CREATE TABLE users
   FOREIGN KEY (department_id) REFERENCES departments (id)
 );
 
-INSERT INTO users (login, password) VALUES ('user', '$2a$10$uIldifxt7lyLHtygnf5EVO8yKJagb8M.QjvbzvTjA2UOz6RzXNULu');
+INSERT INTO users (login, password, first_name, last_name, position) VALUES
+('user', '$2a$10$uIldifxt7lyLHtygnf5EVO8yKJagb8M.QjvbzvTjA2UOz6RzXNULu', 'Юзер', 'Тестовый', 'Junior Developer'),
+('manager', '$2a$10$uIldifxt7lyLHtygnf5EVO8yKJagb8M.QjvbzvTjA2UOz6RzXNULu', 'Менеджер', 'Тестовый', 'Project Manager');
 
 DROP TABLE IF EXISTS roles;
 CREATE TABLE roles
@@ -60,6 +62,10 @@ CREATE TABLE projects
   FOREIGN KEY (manager_id) REFERENCES users (id),
   CHECK (status in ('CREATED','ONGOING','COMPLETE','ARCHIVE'))
 );
+INSERT INTO projects (title, description, manager_id, status) VALUES
+('Тестовый проект 1', 'Test project', (select id from users where login='manager'), 'CREATED'),
+('Тестовый проект 2', 'Test project', (select id from users where login='manager'), 'CREATED');
+
 
 DROP TABLE IF EXISTS users_projects;
 CREATE TABLE users_projects
@@ -138,13 +144,14 @@ DROP TABLE IF EXISTS notifications;
 CREATE TABLE notifications
 (
   id                    BIGSERIAL,
+  status                VARCHAR(50) NOT NULL,
   data                  VARCHAR(2000) NOT NULL,
-  author_id             BIGINT,
-  date_create           DATE default current_date,
+  date_create           DATE NOT NULL,
   task_id 				BIGINT,
   project_id 			BIGINT,
+  receiver_id 			BIGINT,
   PRIMARY KEY (id),
-  FOREIGN KEY (author_id) REFERENCES users (id),
+  FOREIGN KEY (receiver_id) REFERENCES users (id),
   FOREIGN KEY (task_id ) REFERENCES tasks (id),
   FOREIGN KEY (project_id ) REFERENCES projects (id)
 );
