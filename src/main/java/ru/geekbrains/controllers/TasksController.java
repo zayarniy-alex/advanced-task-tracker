@@ -16,6 +16,7 @@ import ru.geekbrains.utils.TaskFilter;
 
 import java.io.Serializable;
 import java.security.Principal;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class TasksController implements Serializable {
     }
 
     @GetMapping("/")
-    public String showTasks(Model model, Principal principal, @RequestParam Map<String, String> params) {
+    public String showTasks(Model model, Principal principal, @RequestParam Map<String, String> params) throws ParseException {
 
         int pageIndex = 0;
         if (params.containsKey("p")) {

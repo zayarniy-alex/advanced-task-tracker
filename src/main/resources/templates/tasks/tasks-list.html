@@ -34,6 +34,16 @@
                             th:value="${p.id}"/>
                 </select>
             </div>
+            <div class="col form-group">
+                <label>Задачи (постановщик/исполнитель)</label>
+                <select name="whois" class="form-control">
+                    <option th:text="'Не выбрано'" th:value="null"/>
+                    <option th:text="'Назначены мне'" th:value="1" th:selected="${param.whois != null && param.whois == 1}" />
+                    <option th:text="'Созданы мной'" th:value="2"/>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
             <div class="form-group col">
                 <label>Срочность</label>
                 <select name="urgency" class="form-control">
@@ -50,7 +60,12 @@
                             th:selected="${param.status != null && s.toString() == param.status.toString()}"/>
                 </select>
             </div>
+            <div class="col form-group">
+                <label>Дата завершения</label>
+                <input name="due_time" type="date" class="form-control" placeholder="">
+            </div>
         </div>
+
         <button type="submit" th:text="Применить" class="btn btn-success"></button>
         <a class="btn btn-secondary" th:href="@{'/tasks/?p=1'}">Сбросить фильтр</a>
     </form>

@@ -3,6 +3,8 @@ package ru.geekbrains.repositories.specifications;
 import org.springframework.data.jpa.domain.Specification;
 import ru.geekbrains.entities.Task;
 
+import java.util.Date;
+
 public class TaskSpecifications {
 
     public static Specification<Task> managerIdEquals(Long managerId) {
@@ -23,5 +25,9 @@ public class TaskSpecifications {
 
     public static Specification<Task> projectIdEquals(Long projectId) {
         return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("project_id"), projectId);
+    }
+
+    public static Specification<Task> dueTimeEquals(Date dueTime) {
+        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("due_time"), dueTime);
     }
 }
