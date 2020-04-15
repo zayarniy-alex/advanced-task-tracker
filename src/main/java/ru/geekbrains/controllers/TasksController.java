@@ -72,6 +72,8 @@ public class TasksController implements Serializable {
     @GetMapping("/create")
     public String createTask(Model model, Principal principal, @ModelAttribute(name = "task") Task task) {
         task.setManager_id(userService.getUser(principal.getName()).getId());
+        task.setStatus(Task.Status.CREATED);
+        task.setProgress(0);
         model.addAttribute("projectList", projectService.findAll());
         model.addAttribute("userList", userService.findAll());
         return "tasks/create-task";
