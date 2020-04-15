@@ -35,7 +35,7 @@
             <input th:field="*{manager_id}" type="hidden" class="form-control">
             <div class="col form-group">
                 <label>Исполнитель</label>
-                <select th:field="*{employer_id}">
+                <select th:field="*{employer_id}" class="form-control">
                     <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.firstname}+' '+${user.lastname}"></option>
                 </select>
             </div>
@@ -58,20 +58,20 @@
         <div class="form-row">
             <div class="col form-group">
                 <label>Проект</label>
-                <select th:field="*{project_id}">
+                <select th:field="*{project_id}" class="form-control">
                     <option th:each="project : ${projectList}" th:value="${project.id}" th:text="${project.title}"></option>
                 </select>
             </div>
             <div class="col form-group">
                 <label>Срочность</label>
-                <select th:field="*{urgency}">
+                <select th:field="*{urgency}" class="form-control">
                     <option th:each="u : ${T(ru.geekbrains.entities.Task.Urgency).values()}" th:value="${u}" th:text="${u}"></option>
                 </select>
 
             </div>
             <div class="col form-group">
                 <label>Статус</label>
-                <select th:field="*{status}">
+                <select th:field="*{status}" class="form-control">
                     <option th:each="s : ${T(ru.geekbrains.entities.Task.Status).values()}" th:value="${s}" th:text="${s}"></option>
                 </select>
             </div>
