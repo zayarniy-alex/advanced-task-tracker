@@ -28,12 +28,14 @@ public class TaskFilter {
                 if (map.containsKey("employer_id") && !map.get("employer_id").isEmpty()) {
                     Long employerId = Long.parseLong(map.get("employer_id"));
                     filterDefinition.append("&employer_id=").append(employerId);
+                    filterDefinition.append("&whois=").append(whois);
                     spec = spec.and(TaskSpecifications.employerIdEquals(employerId));
                 }
             } else if (whois == 2) {
                 if (map.containsKey("manager_id") && !map.get("manager_id").isEmpty()) {
                     Long managerId = Long.parseLong(map.get("manager_id"));
                     filterDefinition.append("&manager_id=").append(managerId);
+                    filterDefinition.append("&whois=").append(whois);
                     spec = spec.and(TaskSpecifications.managerIdEquals(managerId));
                 }
             } else {
@@ -91,8 +93,14 @@ public class TaskFilter {
             filterDefinition.append("&project_id=").append(projectId);
         }
 
-        if (map.containsKey("due_time") && !map.get("due_time").isEmpty()) {
+        if (map.containsKey("start_time") && !map.get("start_time").isEmpty()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date start_time = sdf.parse(map.get("start_time"));
+            spec = spec.and(TaskSpecifications.startTimeEquals(start_time));
+            filterDefinition.append("&start_time=").append(start_time);
+        }
 
+        if (map.containsKey("due_time") && !map.get("due_time").isEmpty()) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date due_time = sdf.parse(map.get("due_time"));
             spec = spec.and(TaskSpecifications.dueTimeEquals(due_time));

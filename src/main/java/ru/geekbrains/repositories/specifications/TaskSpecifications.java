@@ -27,6 +27,10 @@ public class TaskSpecifications {
         return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("project_id"), projectId);
     }
 
+    public static Specification<Task> startTimeEquals(Date startTime) {
+        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("start_time"), startTime);
+    }
+
     public static Specification<Task> dueTimeEquals(Date dueTime) {
         return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("due_time"), dueTime);
     }
