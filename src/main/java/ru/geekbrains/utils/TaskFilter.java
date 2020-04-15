@@ -30,15 +30,15 @@ public class TaskFilter {
             spec = spec.and(TaskSpecifications.managerIdEquals(managerId).or(TaskSpecifications.employerIdEquals(employerId)));
         }
 
-//        if (map.containsKey("urgency") && !map.get("urgency").isEmpty()) {
-//            spec = spec.and(TaskSpecifications.urgencyEquals(map.get("urgency").toString()));
-//            filterDefinition.append("&urgency=").append(map.get("urgency"));
-//        }
-//
-//        if (map.containsKey("status") && !map.get("status").isEmpty()) {
-//            spec = spec.and(TaskSpecifications.statusEquals(map.get("status")));
-//            filterDefinition.append("&status=").append(map.get("status"));
-//        }
+        if (map.containsKey("urgency") && !map.get("urgency").isEmpty()) {
+            spec = spec.and(TaskSpecifications.urgencyEquals(map.get("urgency")));
+            filterDefinition.append("&urgency=").append(map.get("urgency"));
+        }
+
+        if (map.containsKey("status") && !map.get("status").isEmpty()) {
+            spec = spec.and(TaskSpecifications.statusEquals(map.get("status")));
+            filterDefinition.append("&status=").append(map.get("status"));
+        }
 
         if (map.containsKey("project_id") && !map.get("project_id").isEmpty()) {
             Long projectId = Long.parseLong(map.get("project_id"));

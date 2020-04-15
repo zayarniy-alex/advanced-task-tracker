@@ -14,15 +14,11 @@ public class TaskSpecifications {
     }
 
     public static Specification<Task> urgencyEquals(String urgency) {
-        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("urgency"), urgency);
+        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("urgency"), Task.Urgency.valueOf(urgency));
     }
 
-    // с enum возникают такие ошибки
-    // Parameter value [ONGOING] did not match expected type [ru.geekbrains.entities.Task$Status (n/a)];
-    // nested exception is java.lang.IllegalArgumentException:
-    // Parameter value [ONGOING] did not match expected type [ru.geekbrains.entities.Task$Status (n/a)]
     public static Specification<Task> statusEquals(String status) {
-        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), status);
+        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), Task.Status.valueOf(status));
     }
 
     public static Specification<Task> projectIdEquals(Long projectId) {
