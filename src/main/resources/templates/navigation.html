@@ -1,63 +1,72 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <title>Advanced task tracker</title>
 
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 
-<div th:fragment="navigation(activeTab)">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item" th:classappend="${activeTab == 'Home' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/}" th:text="#{nav.home}"></a>
-                </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item"
-                    th:classappend="${activeTab == 'Profile' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/profile}" th:text="#{nav.profile}"></a>
-                </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item"
-                    th:classappend="${activeTab == 'Tasks' ? 'active' : ''}">
-                    <a class="nav-link" th:href="@{/tasks/}" th:text="Tasks"></a>
-                </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <form th:action="@{/logout}" method="POST">
-                        <button id="navLogout" class="btn btn-outline-secondary" type="submit"
-                                th:text="#{nav.logout}"></button>
-                    </form>
-                </li>
-
-                <li sec:authorize="isAnonymous()" class="nav-item">
-                    <form class="align-middle" th:action="@{/authenticateTheUser}" method="POST">
-                        <div class="input-group-prepend">
-                            <input id="navLoginField" class="form-control" type="text"
-                                   th:placeholder="#{nav.login.field}" name="username"
-                                   aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
-                            <input id="navPasswordField" class="form-control" type="password"
-                                   th:placeholder="#{nav.password}" name="password"
-                                   aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
-                            <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm"
-                                    style="margin-left: 10px;" type="submit" th:text="#{nav.login.submit}"></button>
-                        </div>
-                    </form>
-                </li>
-
-                <div class="dropdown" style="margin-left: 10px;">
-                    <button class="btn btn-outline-settcondary dropdown-toggle" th:text="#{nav.lang}" type="button"
-                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"/>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" th:href="@{/?lang=ru}">РУС</a>
-                        <a class="dropdown-item" th:href="@{/?lang=en}">ENG</a>
-                    </div>
+<body>
+    <div th:fragment="navigation(activeTab)">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+            <a class="navbar-brand ml-1 mr-5"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav mr-auto ml-5">
+                    <div class="nav-item"></div>
                 </div>
-            </ul>
+                <form class="form-inline">
+                    <input class="form-control mr-sm-1" type="search" placeholder="Поиск" aria-label="Поиск">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                        <img th:src="@{/img/icons/search.svg}" alt="" width="22" height="22" title="Поиск">
+                    </button>
+                    <div class="form-inline" th:action="@{/tasks/}" method="GET">
+                        <button id="notification" class="btn btn-outline-secondary" type="submit" style="margin-left: 20px">
+                            <img th:src="@{/img/icons/bell.svg}" alt="" width="22" height="22" title="Уведомления">
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 10px;">
+                            <img th:src="@{/img/icons/user.svg}" alt="" width="22" height="22" title="Пользователь">
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <form th:action="@{/user/user-profile}" method="GET">
+                                <button class="dropdown-item" type="button" th:text="Профиль"></button>
+                            </form>
+                            <form th:action="@{/user/updatePassword}" method="GET">
+                                <button class="dropdown-item" type="submit" th:text="Безопасность"></button>
+                            </form>
+                            <div class="dropdown-divider"></div>
+                            <form th:action="@{/logout}" method="POST">
+                                <button class="dropdown-item" type="submit" th:text="Выход"></button>
+                            </form>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </nav>
+        <div class="sidebar-nav">
+            <a class="navbar-brand m-1 ml-4 mr-4" th:href="@{/tasks/}">
+                <img th:src="@{/img/task-tracker-logo.png}" height="40px" width="115px" title="Task Tracker"/>
+            </a>
+            <div class="m-2"></div>
+            <a class="btn btn-success m-3" th:href="@{'/tasks/create'}">Новая задача</a>
+            <div class="m-2"></div>
+            <div class="nav flex-column nav-pills navbar-dark bg-dark fixed-left" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-tasks-tab" th:href="@{/tasks/}" role="tab" aria-controls="v-pills-tasks" aria-selected="true">Все задачи</a>
+                <a class="nav-link" id="v-pills-projects-tab" data-toggle="pill" href="" role="tab" aria-controls="v-pills-projects" aria-selected="false">Проекты</a>
+            </div>
         </div>
-    </nav>
-</div>
+    </div>
+</body>
+</html>
