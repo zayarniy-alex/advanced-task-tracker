@@ -14,38 +14,23 @@ import ru.geekbrains.services.TasksService;
 import ru.geekbrains.services.UserService;
 import ru.geekbrains.utils.TaskFilter;
 
-import java.io.Serializable;
 import java.security.Principal;
 import java.text.ParseException;
-import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/tasks")
-public class TasksController implements Serializable {
+public class TasksController {
 
     private TasksService tasksService;
     private ProjectService projectService;
     private UserService userService;
     private TaskHistoryService taskHistoryService;
 
-    @Autowired
-    public void setTasksService(TasksService tasksService) {
+    public TasksController(TasksService tasksService, ProjectService projectService, UserService userService, TaskHistoryService taskHistoryService) {
         this.tasksService = tasksService;
-    }
-
-    @Autowired
-    public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setTaskHistoryService(TaskHistoryService taskHistoryService) {
         this.taskHistoryService = taskHistoryService;
     }
 
