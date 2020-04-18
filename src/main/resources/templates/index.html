@@ -3,21 +3,19 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" http-equiv="refresh" content="0;URL=http://localhost:8080/app/tasks/" />
+
     <title>Advanced Task tracker</title>
-    <link rel="stylesheet" th:href="@{../static/css/stylesheet.css}">
+
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-
-<div class="container">
     <div th:replace="~{navigation :: navigation(Home)}"/>
-
-    <h1>Advanced Task tracker</h1>
-</div>
-
 </body>
 </html>

@@ -1,0 +1,48 @@
+.fixed-top {
+    left: 161px!important;
+}
+
+.sidebar {
+    right: 0;
+    height: 100%;
+}
+.sidebar, .sidebar-nav {
+    top: 0;
+    height: 100%;
+    z-index: 1030;
+    background-color: #343a40!important;
+}
+.sidebar-nav {
+    width: 162px;
+    position: fixed;
+    left: 0;
+}
+
+.content-position {
+    height: 100%;
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    margin-top: 43px;
+    margin-left: 162px;
+    padding: 45px;
+}
+
+/*body {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+}
+
+.topbar {
+    left: 10%!important;
+    right: 10%!important;
+}*/
+
