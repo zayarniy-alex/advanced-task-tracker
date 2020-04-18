@@ -3,6 +3,8 @@ package ru.geekbrains.repositories.specifications;
 import org.springframework.data.jpa.domain.Specification;
 import ru.geekbrains.entities.Task;
 
+import java.util.Date;
+
 public class TaskSpecifications {
 
     public static Specification<Task> managerIdEquals(Long managerId) {
@@ -14,18 +16,22 @@ public class TaskSpecifications {
     }
 
     public static Specification<Task> urgencyEquals(String urgency) {
-        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("urgency"), urgency);
+        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("urgency"), Task.Urgency.valueOf(urgency));
     }
 
-    // с enum возникают такие ошибки
-    // Parameter value [ONGOING] did not match expected type [ru.geekbrains.entities.Task$Status (n/a)];
-    // nested exception is java.lang.IllegalArgumentException:
-    // Parameter value [ONGOING] did not match expected type [ru.geekbrains.entities.Task$Status (n/a)]
     public static Specification<Task> statusEquals(String status) {
-        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), status);
+        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), Task.Status.valueOf(status));
     }
 
     public static Specification<Task> projectIdEquals(Long projectId) {
         return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("project_id"), projectId);
+    }
+
+    public static Specification<Task> startTimeEquals(Date startTime) {
+        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("start_time"), startTime);
+    }
+
+    public static Specification<Task> dueTimeEquals(Date dueTime) {
+        return (Specification<Task>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("due_time"), dueTime);
     }
 }

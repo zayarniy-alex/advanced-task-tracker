@@ -19,59 +19,50 @@
     <div th:replace="~{navigation :: navigation(Home)}"/>
     <div class="content-position">
         <h3>Создать задачу</h3>
-
         <form th:action="@{/tasks/add}" th:object="${task}" method="POST">
             <div class="form-group">
-                <label>Наименование</label>
-                <input th:field="*{title}" type="text" class="form-control" placeholder="">
-            </div>
-            <div class="form-group">
-                <label>Подробности</label>
-                <textarea class="form-control" th:field="*{description}" type="text" rows="3"></textarea>
-            </div>
-            <div class="form-row">
-                <input th:field="*{manager_id}" type="hidden" class="form-control">
-                <div class="col form-group">
-                    <label>Исполнитель</label>
-                    <select th:field="*{employer_id}">
-                        <option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.firstname}+' '+${user.lastname}"></option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col form-group">
-                    <label>Дата завершения</label>
-                    <input th:field="*{due_time}" type="date" class="form-control" placeholder="">
-                </div>
-                <div class="col form-group">
-                    <label>Планируемое время (в часах)</label>
-                    <input th:field="*{plan_time}" type="number" class="form-control" placeholder="">
-                </div>
-                <div class="col form-group">
-                    <label>Прогресс (в процентах)</label>
-                    <input th:field="*{progress}" type="number" class="form-control" placeholder="">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col form-group">
-                    <label>Проект</label>
-                    <select th:field="*{project_id}">
-                        <option th:each="project : ${projectList}" th:value="${project.id}" th:text="${project.title}"></option>
-                    </select>
-                </div>
-                <div class="col form-group">
-                    <label>Срочность</label>
-                    <select th:field="*{urgency}">
-                        <option th:each="u : ${T(ru.geekbrains.entities.Task.Urgency).values()}" th:value="${u}" th:text="${u}"></option>
-                    </select>
-                </div>
-                <div class="col form-group">
-                    <label>Статус</label>
-                    <select th:field="*{status}">
-                        <option th:each="s : ${T(ru.geekbrains.entities.Task.Status).values()}" th:value="${s}" th:text="${s}"></option>
-                    </select>
-                </div>
-            </div>
+				<label>Наименование</label>
+				<input th:field="*{title}" type="text" class="form-control" placeholder="">
+			</div>
+
+			<div class="form-group">
+				<label>Подробности</label>
+				<textarea class="form-control" th:field="*{description}" type="text" rows="3"></textarea>
+			</div>
+
+			<div class="form-row">
+				<div class="col form-group">
+					<label>Дата завершения</label>
+					<input th:field="*{due_time}" type="date" class="form-control" placeholder="">
+				</div>
+				<div class="col form-group">
+					<label>Планируемое время (в часах)</label>
+					<input th:field="*{plan_time}" type="number" class="form-control" placeholder="">
+				</div>
+			</div>
+			<div class="form-row">
+				<input th:field="*{manager_id}" type="hidden" class="form-control">
+				<input th:field="*{status}" type="hidden" class="form-control">
+				<input th:field="*{progress}" type="hidden" class="form-control">
+				<div class="col form-group">
+					<label>Исполнитель</label>
+					<select th:field="*{employer_id}" class="form-control">
+						<option th:each="user : ${userList}" th:value="${user.id}" th:text="${user.firstname}+' '+${user.lastname}"></option>
+					</select>
+				</div>
+				<div class="col form-group">
+					<label>Проект</label>
+					<select th:field="*{project_id}" class="form-control">
+						<option th:each="project : ${projectList}" th:value="${project.id}" th:text="${project.title}"></option>
+					</select>
+				</div>
+				<div class="col form-group">
+					<label>Срочность</label>
+					<select th:field="*{urgency}" class="form-control">
+						<option th:each="u : ${T(ru.geekbrains.entities.Task.Urgency).values()}" th:value="${u}" th:text="${u}"></option>
+					</select>
+				</div>
+			</div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
             </div>

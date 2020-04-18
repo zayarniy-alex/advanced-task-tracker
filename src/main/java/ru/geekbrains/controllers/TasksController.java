@@ -14,42 +14,28 @@ import ru.geekbrains.services.TasksService;
 import ru.geekbrains.services.UserService;
 import ru.geekbrains.utils.TaskFilter;
 
-import java.io.Serializable;
 import java.security.Principal;
-import java.util.List;
+import java.text.ParseException;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/tasks")
-public class TasksController implements Serializable {
+public class TasksController {
 
     private TasksService tasksService;
     private ProjectService projectService;
     private UserService userService;
     private TaskHistoryService taskHistoryService;
 
-    @Autowired
-    public void setTasksService(TasksService tasksService) {
+    public TasksController(TasksService tasksService, ProjectService projectService, UserService userService, TaskHistoryService taskHistoryService) {
         this.tasksService = tasksService;
-    }
-
-    @Autowired
-    public void setProjectService(ProjectService projectService) {
         this.projectService = projectService;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setTaskHistoryService(TaskHistoryService taskHistoryService) {
         this.taskHistoryService = taskHistoryService;
     }
 
     @GetMapping("/")
-    public String showTasks(Model model, Principal principal, @RequestParam Map<String, String> params) {
+    public String showTasks(Model model, Principal principal, @RequestParam Map<String, String> params) throws ParseException {
 
         int pageIndex = 0;
         if (params.containsKey("p")) {
@@ -72,6 +58,8 @@ public class TasksController implements Serializable {
     @GetMapping("/create")
     public String createTask(Model model, Principal principal, @ModelAttribute(name = "task") Task task) {
         task.setManager_id(userService.getUser(principal.getName()).getId());
+        task.setStatus(Task.Status.CREATED);
+        task.setProgress(0);
         model.addAttribute("projectList", projectService.findAll());
         model.addAttribute("userList", userService.findAll());
         return "tasks/create-task";
