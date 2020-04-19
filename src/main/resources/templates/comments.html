@@ -43,6 +43,7 @@
                         </div>
                         <div class="input-group">
                             <select class="form-control" id="authorId" name="idAuthor" >
+                                <option value="0">Все</option>
                                 <option th:each="dropDownItem : ${users}"
                                         th:value="${dropDownItem.id}"
                                         th:text="${dropDownItem.lastname}+' '

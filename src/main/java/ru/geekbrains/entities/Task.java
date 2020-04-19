@@ -67,4 +67,9 @@ public class Task {
 
     @Column (name = "plan_time")
     private Long plan_time;
+
+    @ManyToOne
+    @JoinColumn(name="project_id", insertable=false, updatable=false)
+    private Project project;
+
 }
