@@ -1,6 +1,5 @@
 package ru.geekbrains.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.entities.Task;
+import ru.geekbrains.errors_handlers.ResourceNotFoundException;
 import ru.geekbrains.services.ProjectService;
 import ru.geekbrains.services.TaskHistoryService;
 import ru.geekbrains.services.TasksService;
@@ -72,12 +72,12 @@ public class TasksController {
     }
 
     @GetMapping("/edit")
-    public String editTask(Model model, Principal principal, @RequestParam(name = "id", required = false) Long id) throws Exception {
+    public String editTask(Model model, Principal principal, @RequestParam(name = "id", required = false) Long id) {
         Task task = null;
         if (id != null) {
             task = tasksService.findById(id);
         } else {
-            throw new Exception("Id отсутствует");
+            throw new ResourceNotFoundException("Task id не указан");
         }
         model.addAttribute("editor", userService.getUser(principal.getName()));
         model.addAttribute("task", task);
@@ -98,7 +98,7 @@ public class TasksController {
         if (id != null) {
             task = tasksService.findById(id);
         } else {
-            throw new Exception("Id не указан");
+            throw new ResourceNotFoundException("Task id не указан");
         }
 
         model.addAttribute("task", task);
