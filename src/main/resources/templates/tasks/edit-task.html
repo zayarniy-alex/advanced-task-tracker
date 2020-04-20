@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div th:replace="~{navigation :: navigation(Home)}"/>
+    <div th:replace="~{navigation :: navigation(Tasks)}"/>
     <div class="content-position">
         <h3>Редактировать задачу</h3>
         <form th:action="@{/tasks/edit}" th:object="${task}" method="POST">
