@@ -42,16 +42,6 @@ public class CommentsService {
         return commentRepository.save(comment);
     }
 
-    public List<User> getUserList(){
-        List<User> listUsers=userService.findAll();
-        User user=new User();
-        user.setId(0L);
-        user.setFirstname("");
-        user.setLastname("");
-        listUsers.add(0,user);
-        return listUsers;
-    }
-
     public List<Comment> getCommentsFilter(CommentFilter filter){
         CommentFilter localFilter=new CommentFilter();
         localFilter=filter;

@@ -14,6 +14,23 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table (name = "projects")
 
 public class Project {
+    public enum Status {
+        CREATED("Создан"), ONGOING("В работе"),
+        COMPLETE("Завершен"), ARCHIVE("В архиве");
+        private String code;
+
+        private Status(String code) {
+            this.code = code;
+        }
+
+
+
+        public String getCode() {
+            return code;
+        }
+    }
+
+
     @Id
     @GeneratedValue (strategy = IDENTITY)
     @Column (name = "id")
@@ -27,6 +44,17 @@ public class Project {
 
     @Column (name = "manager_id")
     private Long manager_id;
+
+    @Enumerated(EnumType.STRING)
+    @Column (name = "status")
+    private Status status;
+
+    @OneToOne
+    @JoinColumn(name = "manager_id", insertable=false, updatable=false)
+    private User user;
+
+    @OneToMany(mappedBy = "project_id")
+    private List<Task> tasks;
 
     @ManyToMany
     @JoinTable (name = "users_projects",

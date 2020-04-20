@@ -45,7 +45,7 @@ public class CommentsController {
         model.addAttribute("activePage", "Comments");
         model.addAttribute("filter", filter);
         model.addAttribute("comments", commentsService.getCommentsFilter(filter));
-        model.addAttribute("users", commentsService.getUserList());
+        model.addAttribute("users", userService.getUserList());
         model.addAttribute("taskIdN", filter.getIdTask());
         return "comments";
     }
