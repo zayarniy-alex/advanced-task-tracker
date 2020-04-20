@@ -56,13 +56,13 @@
             </div>
         </nav>
         <div class="sidebar-nav">
-            <a class="navbar-brand m-1 ml-4 mr-4" th:href="@{/tasks/}">
-                <img th:src="@{/img/task-tracker-logo.png}" height="40px" width="115px" title="Task Tracker"/>
+            <a class="navbar-brand m-1 mr-4" th:href="@{/tasks/}">
+                <img th:src="@{/img/logo.png}" width="145px" title="Task Tracker"/>
             </a>
             <div class="m-2"></div>
-            <a class="btn btn-success m-3" th:href="@{'/tasks/create'}">Новая задача</a>
+            <a class="nav-link btn btn-success m-2" th:href="@{'/tasks/create'}">Новая задача</a>
             <div class="m-2"></div>
-            <div class="nav flex-column nav-pills navbar-dark bg-dark fixed-left" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <div class="nav flex-column nav-pills navbar-dark bg-dark fixed-left m-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-tasks-tab" th:href="@{/tasks/}" role="tab" aria-controls="v-pills-tasks" aria-selected="true">Все задачи</a>
                 <a class="nav-link" id="v-pills-projects-tab"  th:href="@{/projects/}" role="tab" aria-controls="v-pills-projects" aria-selected="true">Проекты</a>
             </div>
