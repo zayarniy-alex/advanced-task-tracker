@@ -4,10 +4,13 @@ package ru.geekbrains.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.dto.NotificationDTO;
+import ru.geekbrains.entities.Notification;
 import ru.geekbrains.repositories.NotificationRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+import static ru.geekbrains.entities.Notification.Status.CHECKED;
 
 
 @Service
@@ -29,7 +32,20 @@ public class NotificationService
 	return notificationRepo.findAllByUserId(userId)
 						   .stream()
 						   .map(NotificationDTO::new)
-						   .collect(Collectors.toList());
+						   .collect(toList());
+  }
+
+
+  public void markNotificationsAsReaded(List<NotificationDTO> list)
+  {
+	List<Long> idList = list.stream()
+							.map(NotificationDTO::getId)
+							.collect(toList());
+
+	List<Notification> notifications = notificationRepo.findAllById(idList);
+
+	notifications.forEach(x -> x.setStatus(CHECKED));
+	notificationRepo.saveAll(notifications);
   }
 
 }

@@ -53,6 +53,8 @@ public class NotificationController
 					.thenComparing(NotificationDTO::getCreationDate));
 
 	ui.addAttribute("notifications", notifications);
+
+	notifService.markNotificationsAsReaded(notifications);
 	return "notifications";
   }
 
