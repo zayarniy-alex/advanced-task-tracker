@@ -97,7 +97,6 @@ public class TasksController {
     public String saveModifiedTask(@Valid @ModelAttribute(name = "task") Task task, BindingResult bindingResult, Principal principal, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("editor", userService.getUser(principal.getName()));
-            //model.addAttribute("task", task);
             model.addAttribute("projectList", projectService.findAll());
             model.addAttribute("userList", userService.findAll());
             return "tasks/edit-task";
