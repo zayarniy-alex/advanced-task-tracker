@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.entities.Task;
 import ru.geekbrains.errors_handlers.ResourceNotFoundException;
@@ -14,6 +15,7 @@ import ru.geekbrains.services.TasksService;
 import ru.geekbrains.services.UserService;
 import ru.geekbrains.utils.TaskFilter;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.text.ParseException;
 import java.util.Map;
@@ -66,7 +68,12 @@ public class TasksController {
     }
 
     @PostMapping("/add")
-    public String addTask(@ModelAttribute(name = "task") Task task) {
+    public String addTask(@Valid @ModelAttribute(name = "task") Task task, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("projectList", projectService.findAll());
+            model.addAttribute("userList", userService.findAll());
+            return "tasks/create-task";
+        }
         tasksService.save(task);
         return "redirect:/tasks/";
     }
@@ -87,7 +94,14 @@ public class TasksController {
     }
 
     @PostMapping("/edit")
-    public String saveModifiedProduct(@ModelAttribute(name = "task") Task task, Principal principal) {
+    public String saveModifiedTask(/*@Valid */@ModelAttribute(name = "task") Task task, /*BindingResult bindingResult, */Principal principal/*, Model model*/) {
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("editor", userService.getUser(principal.getName()));
+//            model.addAttribute("task", task);
+//            model.addAttribute("projectList", projectService.findAll());
+//            model.addAttribute("userList", userService.findAll());
+//            return "tasks/edit-task";
+//        }
         tasksService.save(task, principal);
         return "redirect:/tasks/";
     }

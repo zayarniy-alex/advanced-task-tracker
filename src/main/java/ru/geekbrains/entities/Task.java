@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -31,6 +32,8 @@ public class Task {
     private Long id;
 
     @Column (name = "title")
+    @NotNull(message = "not null check")
+    @Size(min = 3, message = "title must be greater than 2 symbols")
     private String title;
 
     @Column (name = "description")
@@ -63,6 +66,7 @@ public class Task {
     private float progress;
 
     @Column (name = "project_id")
+    @NotNull(message = "is required")
     private Long project_id;
 
     @Column (name = "plan_time")

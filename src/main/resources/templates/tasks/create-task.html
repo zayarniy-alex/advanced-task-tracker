@@ -23,6 +23,7 @@
             <div class="form-group">
 				<label>Наименование</label>
 				<input th:field="*{title}" type="text" class="form-control" placeholder="">
+				<div class="error" style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" />
 			</div>
 
 			<div class="form-group">
@@ -55,6 +56,7 @@
 					<select th:field="*{project_id}" class="form-control">
 						<option th:each="project : ${projectList}" th:value="${project.id}" th:text="${project.title}"></option>
 					</select>
+					<div class="error" style="color:red" th:if="${#fields.hasErrors('project_id')}" th:errors="*{project_id}" />
 				</div>
 				<div class="col form-group">
 					<label>Срочность</label>
