@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div th:replace="~{navigation :: navigation(Home)}"/>
+    <div th:replace="~{navigation :: navigation(Tasks)}"/>
     <div class="content-position">
         <h3>Редактировать задачу</h3>
         <form th:action="@{/tasks/edit}" th:object="${task}" method="POST">
@@ -23,10 +23,12 @@
             <div class="form-group">
                 <label>Наименование</label>
                 <input th:field="*{title}" type="text" class="form-control" placeholder="">
+                <div class="error" style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" />
             </div>
             <div class="form-group">
                 <label>Подробности</label>
                 <textarea class="form-control" th:field="*{description}" type="text" rows="3"></textarea>
+                <div class="error" style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}" />
             </div>
             <div class="form-row">
                 <div class="col form-group">
@@ -51,10 +53,12 @@
                 <div class="col form-group">
                     <label>Дата завершения</label>
                     <input th:field="*{due_time}" type="date" class="form-control" placeholder="">
+                    <div class="error" style="color:red" th:if="${#fields.hasErrors('due_time')}" th:errors="*{due_time}" />
                 </div>
                 <div class="col form-group">
                     <label>Планируемое время (в часах)</label>
                     <input th:field="*{plan_time}" type="number" class="form-control" placeholder="">
+                    <div class="error" style="color:red" th:if="${#fields.hasErrors('plan_time')}" th:errors="*{plan_time}" />
                 </div>
                 <div class="col form-group">
                     <label>Прогресс (в процентах)</label>
@@ -67,6 +71,7 @@
                     <select th:field="*{project_id}" class="form-control">
                         <option th:each="project : ${projectList}" th:value="${project.id}" th:text="${project.title}"></option>
                     </select>
+                    <div class="error" style="color:red" th:if="${#fields.hasErrors('project_id')}" th:errors="*{project_id}" />
                 </div>
                 <div class="col form-group">
                     <label>Срочность</label>

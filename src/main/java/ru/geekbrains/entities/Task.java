@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -31,9 +32,13 @@ public class Task {
     private Long id;
 
     @Column (name = "title")
+    @NotNull(message = "Поле должно быть заполнено")
+    @Size(min = 3, message = "Название должно быть длиннее 2 символов")
     private String title;
 
     @Column (name = "description")
+    @NotNull(message = "Обязательное поле")
+    @Size(min = 7, message = "Описание должно быть длиннее 7 символов")
     private String description;
 
     @Column (name = "manager_id")
@@ -49,6 +54,7 @@ public class Task {
 
     @Column (name = "due_time")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "Обязательное поле")
     private Date due_time;
 
     @Column (name = "urgency")
@@ -63,9 +69,11 @@ public class Task {
     private float progress;
 
     @Column (name = "project_id")
+    @NotNull(message = "Обязательное поле")
     private Long project_id;
 
     @Column (name = "plan_time")
+    @NotNull(message = "Обязательное поле")
     private Long plan_time;
 
     @ManyToOne
