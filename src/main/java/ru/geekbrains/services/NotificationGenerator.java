@@ -10,6 +10,7 @@ import ru.geekbrains.entities.Notification;
 import ru.geekbrains.entities.Task;
 import ru.geekbrains.events.TaskCreatedEvent;
 import ru.geekbrains.repositories.NotificationRepository;
+import ru.geekbrains.repositories.TasksRepository;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -17,12 +18,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static java.time.LocalTime.MIDNIGHT;
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 import static org.springframework.transaction.event.TransactionPhase.BEFORE_COMMIT;
 import static ru.geekbrains.entities.Notification.Status.UNCHECKED;
+import static ru.geekbrains.utils.DateUtils.convertToDate;
 
 
 @Component
@@ -30,7 +34,9 @@ public class NotificationGenerator
 {
 
   private NotificationRepository notificationRepo;
+  private TasksRepository tasksRepo;
   private ScheduledExecutorService exec;
+
   @Value("${server.servlet.context-path}")
   private String context;
 
@@ -46,6 +52,13 @@ public class NotificationGenerator
   }
 
 
+  @Autowired
+  public void setTasksRepo(TasksRepository tr)
+  {
+	tasksRepo = tr;
+  }
+
+
   @PostConstruct
   public void init()
   {
@@ -58,9 +71,7 @@ public class NotificationGenerator
 
 	long minUntilTomorrow = now.until(targetTomorrow, ChronoUnit.MINUTES);
 	long minUntilToday = now.until(targetToday, ChronoUnit.MINUTES);
-	long initDelay = minUntilTomorrow <= MINUTES_IN_DAY ?
-					 minUntilTomorrow :
-					 minUntilToday;
+	long initDelay = minUntilTomorrow > MINUTES_IN_DAY ? minUntilToday : minUntilTomorrow;
 
 	exec.scheduleAtFixedRate(
 			this::createHighUrgencyTaskNotifications,
@@ -77,7 +88,30 @@ public class NotificationGenerator
 
   private void createHighUrgencyTaskNotifications()
   {
-	;
+	LocalDate tomorrow = LocalDate.now().plusDays(1);
+	LocalDateTime tomorrowMidnight = LocalDateTime.of(tomorrow, MIDNIGHT);
+	Date from = new Date();
+	Date to = convertToDate(tomorrowMidnight);
+
+	List<Task> tasks = tasksRepo.findByDueTimeInInterval(from, to);
+
+	tasks.forEach(this::createHUTaskNotification);
+  }
+
+
+  private void createHUTaskNotification(Task task)
+  {
+	Long taskId = task.getId();
+
+	Notification notif = new Notification();
+	notif.setStatus(UNCHECKED);
+	notif.setTask_id(taskId);
+	notif.setProject_id(task.getProject_id());
+	notif.setReceiver_id(task.getEmployer_id());
+	notif.setDate_create(new Date());
+	notif.setData("<p>Завтра истекает срок завершения задачи<br>" + getTaskLinkHTML(task) + "</p>");
+
+	notificationRepo.save(notif);
   }
 
 
@@ -89,7 +123,6 @@ public class NotificationGenerator
 	Long taskId = task.getId();
 	Long projId = task.getProject_id();
 	Long userId = task.getEmployer_id();
-	String taskTitle = task.getTitle();
 
 	Notification notif = new Notification();
 	notif.setStatus(UNCHECKED);
@@ -97,11 +130,18 @@ public class NotificationGenerator
 	notif.setProject_id(projId);
 	notif.setReceiver_id(userId);
 	notif.setDate_create(new Date());
-	notif.setData("<p>Вам назначена новая задача<br>" +
-				  "<a href='" + context + "/tasks/show?id=" + taskId + "'>" +
-				  taskTitle + "</a></p>");
+	notif.setData("<p>Вам назначена новая задача<br>" + getTaskLinkHTML(task) + "</p>");
 
 	notificationRepo.save(notif);
+  }
+
+
+  private String getTaskLinkHTML(Task task)
+  {
+	return "<a href='" + context +
+		   "/tasks/show?id=" + task.getId() +
+		   "'>" + task.getTitle() +
+		   "</a>";
   }
 
 }

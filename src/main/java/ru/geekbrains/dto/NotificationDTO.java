@@ -12,6 +12,7 @@ import java.util.Date;
 public class NotificationDTO
 {
 
+  private Long id;
   private Status status;
   private String comment;
   private Date creationDate;
@@ -19,6 +20,7 @@ public class NotificationDTO
 
   public NotificationDTO(Notification notif)
   {
+	id = notif.getId();
 	status = notif.getStatus();
 	comment = notif.getData();
 	creationDate = notif.getDate_create();
