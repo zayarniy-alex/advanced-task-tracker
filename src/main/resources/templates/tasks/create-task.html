@@ -29,16 +29,19 @@
 			<div class="form-group">
 				<label>Подробности</label>
 				<textarea class="form-control" th:field="*{description}" type="text" rows="3"></textarea>
+				<div class="error" style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}" />
 			</div>
 
 			<div class="form-row">
 				<div class="col form-group">
 					<label>Дата завершения</label>
 					<input th:field="*{due_time}" type="date" class="form-control" placeholder="">
+					<div class="error" style="color:red" th:if="${#fields.hasErrors('due_time')}" th:errors="*{due_time}" />
 				</div>
 				<div class="col form-group">
 					<label>Планируемое время (в часах)</label>
 					<input th:field="*{plan_time}" type="number" class="form-control" placeholder="">
+					<div class="error" style="color:red" th:if="${#fields.hasErrors('plan_time')}" th:errors="*{plan_time}" />
 				</div>
 			</div>
 			<div class="form-row">
