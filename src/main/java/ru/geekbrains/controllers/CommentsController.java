@@ -14,6 +14,9 @@ import ru.geekbrains.repositories.CommentRepository;
 import ru.geekbrains.services.CommentsService;
 import ru.geekbrains.services.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
 
 @Controller
@@ -38,8 +41,8 @@ public class CommentsController {
     }
 
     @GetMapping(value="/comments")
-    public String docsFilter(Model model,
-                             @ModelAttribute("filter") CommentFilter filter
+    public String commentsFilter(Model model,
+                                 @ModelAttribute("filter") CommentFilter filter
     )
     {
         model.addAttribute("activePage", "Comments");
@@ -51,29 +54,28 @@ public class CommentsController {
     }
 
     @GetMapping(value="/comments/delete")
-    public String delete(Model model, @RequestParam("id") Long id) {
+    public void delete(Model model, @RequestParam("id") Long id
+            , HttpServletRequest request, HttpServletResponse response
+    ) throws IOException {
         model.addAttribute("activePage", "Comments");
         Comment comment=commentRepository.findById(id).get();
         commentRepository.deleteById(id);
-        return "redirect:/comments?idTask="+comment.getTask_id();
+        response.sendRedirect(request.getHeader("referer"));
     }
 
     @PostMapping("/comments/save")
-    public String save(Model model, RedirectAttributes redirectAttributes
-                               , Principal principal,
-                               @ModelAttribute("comment") Comment comment) {
+    public void save(Model model, RedirectAttributes redirectAttributes
+            , Principal principal,
+                     @ModelAttribute("comment") Comment comment
+            , HttpServletRequest request, HttpServletResponse response
+    ) throws IOException {
         model.addAttribute("activePage", "Comments");
-
         try {
             commentsService.save(comment,principal);
         } catch (Exception ex) {
             redirectAttributes.addFlashAttribute("error", true);
-            if (comment.getId() == null) {
-                return "redirect:/comments/create";
-            }
-            return "redirect:/comments?idTask="+comment.getTask_id();
         }
-        return "redirect:/comments?idTask="+comment.getTask_id();
+        response.sendRedirect(request.getHeader("referer"));
     }
 
 }

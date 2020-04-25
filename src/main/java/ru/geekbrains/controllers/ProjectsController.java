@@ -44,7 +44,7 @@ public class ProjectsController {
 
     @GetMapping(value="/projects")
     public String projectsFilter(Model model,
-                             @ModelAttribute("filter") ProjectFilter filter
+                                 @ModelAttribute("filter") ProjectFilter filter
     )
     {
         model.addAttribute("activePage", "Projects");
