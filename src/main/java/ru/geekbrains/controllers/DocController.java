@@ -118,7 +118,6 @@ public class DocController {
             if (document.getId() == null) {
                 return "redirect:/document/create";
             }
-            return "redirect:/document/" + document.getId() + "/edit";
         }
         return "redirect:/documents?objId="+document.getObject_id()+"&objType="+document.getObject_type()+"&mode=EDIT";
     }
