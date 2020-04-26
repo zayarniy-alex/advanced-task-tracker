@@ -35,8 +35,8 @@
                         <input type="number" id="time_elapsed" name="time_elapsed" th:value="0" placeholder="Время"  class="form-control">
                     </div>
                     <div class="col form-group">
-                        <hr>
-                        <button type="submit" class="btn btn-primary">Добавить</button>
+                        <label for="add-btn" class="invisible">Добавить</label><br>
+                        <button type="submit" class="btn btn-primary" id="add-btn">Добавить</button>
                     </div>
                 </div>
         </form>
@@ -60,8 +60,8 @@
                                     <input type="date" id="dateFinish" name="dateFinish" placeholder="По" th:value="${filter.dateFinish}" class="form-control">
                                 </div>
                                 <div class="col form-group">
-                                    <hr>
-                                    <button type="submit" id="btnFilter" class="btn btn-success">Фильтровать</button>
+                                    <label for="fltr-btn" class="invisible">Фильтровать</label><br>
+                                    <button type="submit" class="btn btn-success" id="fltr-btn">Фильтровать</button>
                                 </div>
                             </div>
                             </form>

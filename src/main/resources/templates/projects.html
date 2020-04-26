@@ -28,72 +28,75 @@
                             </div>
 
                             <div class="col form-group">
-                            <label for="managerId">Менеджер</label>
-                            <select class="form-control" id="managerId" name="managerId">
-                                <option value="0">Все</option>
-                                <option th:each="dropDownItem : ${users}"
-                                        th:value="${dropDownItem.id}"
-                                        th:text="${dropDownItem.lastname}+' '
-                                    +${dropDownItem.lastname}"/>
-                            </select>
+                                <label for="managerId">Менеджер</label>
+                                <select class="form-control" id="managerId" name="managerId">
+                                    <option value="0">Все</option>
+                                    <option th:each="dropDownItem : ${users}"
+                                            th:value="${dropDownItem.id}"
+                                            th:text="${dropDownItem.lastname}+' '
+                                        +${dropDownItem.lastname}"/>
+                                </select>
                             </div>
 
                             <div class="col form-group">
-                            <label for="status">Статус</label>
-                            <select class="form-control" id="status" name="status">
-                                <option value="">Все</option>
-                                <option th:each="status : ${statuses}"
-                                        th:value="${status}"
-                                        th:text="${status.getCode()}">
-                                </option>
-                            </select>
+                                <label for="status">Статус</label>
+                                <select class="form-control" id="status" name="status">
+                                    <option value="">Все</option>
+                                    <option th:each="status : ${statuses}"
+                                            th:value="${status}"
+                                            th:text="${status.getCode()}">
+                                    </option>
+                                </select>
                             </div>
 
                         <div class="col form-group">
-                            <hr>
-                            <button type="submit" class="btn btn-success">Фильтровать</button>
+                            <label for="fltr-btn" class="invisible">Фильтровать</label><br>
+                            <button type="submit" class="btn btn-success" id="fltr-btn">Фильтровать</button>
                         </div>
 
                     </div>
 
         </form>
-        <div class="card" >
-                        <h5 class="card-header">Проекты</h5>
-                        <table id="projects" class="table table-hover" cellspacing="0" width="100%">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th>ИД</th>
-                                <th>Наименование</th>
-                                <th>Менеджер</th>
-                                <th>Статус</th>
-                                <th>Описание</th>
-                                <th>Задачи</th>
-                                <th>Документы</th>
-                                <th>Действие</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="project : ${projects}">
-                                <td th:text="${project.id}"></td>
-                                <td th:text="${project.title}"></td>
-                                <td th:text="${project.user.getFirstname()}+' '+${project.user.getLastname()}"></td>
-                                <td th:text="${project.status.getCode()}"></td>
-                                <td th:text="${project.description}"></td>
-                                <td>
-                                    <a th:href="@{/tasks/(project_id=${project.id})}" th:text="${project.tasks.size()}"></a>
-                                <td>
-                                    <a th:href="@{/documents(objId=${project.id},objType=PROJECT,mode=EDIT)}" class="btn btn-outline-dark" >Документы</a>
-                                </td>
-                                <td>
-                                    <a th:href="@{'/project/'+view(id=${project.id})}">Просмотр</a><br>
-                                    <a th:href="@{'/project/'+edit(id=${project.id})}">Редактирование</a>
-                                    <div th:if="${project.tasks.size()}==0">
-                                    <a th:href="@{'/project/'+delete(id=${project.id})}">Удаление</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+        <div class="card">
+            <h5 class="card-header">Проекты</h5>
+            <div class="card-body">
+                <table id="projects" class="table table-hover">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>ИД</th>
+                        <th>Наименование</th>
+                        <th>Менеджер</th>
+                        <th>Статус</th>
+                        <th>Описание</th>
+                        <th>Задачи</th>
+                        <th>Документы</th>
+                        <th>Действие</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="project : ${projects}">
+                        <td th:text="${project.id}"></td>
+                        <td th:text="${project.title}"></td>
+                        <td th:text="${project.user.getFirstname()}+' '+${project.user.getLastname()}"></td>
+                        <td th:text="${project.status.getCode()}"></td>
+                        <td th:text="${project.description}"></td>
+                        <td>
+                            <a th:href="@{/tasks/(project_id=${project.id})}" th:text="${project.tasks.size()}"></a>
+                        <td>
+                            <a th:href="@{/documents(objId=${project.id},objType=PROJECT,mode=EDIT)}" class="btn btn-outline-dark btn-sm">Документы</a>
+                        </td>
+                        <td>
+                            <a th:href="@{'/project/'+view(id=${project.id})}">Просмотр</a><br>
+                            <a th:href="@{'/project/'+edit(id=${project.id})}">Редактирование</a>
+                            <div th:if="${project.tasks.size()}==0">
+                                <a th:href="@{'/project/'+delete(id=${project.id})}">Удаление</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 

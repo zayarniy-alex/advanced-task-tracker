@@ -13,13 +13,12 @@
 </head>
 
 <body>
-    <div th:replace="~{navigation :: navigation(Home)}"/>
+    <div th:replace="~{navigation :: navigation(AddDocument)}"/>
     <div class="content-position">
+        <h3>Добавление документа</h3>
+        <hr>
         <div id="docbox" class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
             <div class="panel panel-info">
-                <div class="panel-heading">
-                    <div class="panel-title">Добавление документа</div>
-                </div>
                 <div class="panel-body">
                     <form th:action="@{/document/save}" method="POST" class="form-horizontal" enctype="multipart/form-data">
                         <div th:if="${message}!=null" class="form-group col-xs-15">
@@ -29,7 +28,7 @@
                         <span class="input-group-addon"><i class="glyphicon"></i>
                             <span class="input-group-text">Описание</span>
                         </span>
-                            <textarea class="form-control"  name="description" aria-label="Описание"></textarea>
+                            <textarea class="form-control" name="description" aria-label="Описание"></textarea>
                         </div>
                         <input type="hidden" name="object_type" placeholder="Тип объекта" th:value="${objType}" class="form-control">
                         <input type="hidden" name="object_id" placeholder="ИД объекта" th:value="${objId}" class="form-control">
