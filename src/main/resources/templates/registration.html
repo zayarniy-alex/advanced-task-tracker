@@ -7,13 +7,13 @@
 
     <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<div id="regbox" class="mainbox col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2">
+<div id="regbox" class="mainbox col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
     <div class="panel panel-info">
 
         <div class="panel-heading">
@@ -32,8 +32,8 @@
                     <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></p>
 
                     <input type="password" th:field="*{password}" placeholder="пароль" class="form-control">
-                    <p>Пароль должен содержать хотя бы 1 заглавную букву, 1 цифру и 1 специальный символ
-                        и не должен содержать последовательности из 3 и более букв или цифр или входящих в "qwerty"</p>
+                    <h6>Пароль должен содержать хотя бы 1 заглавную букву, 1 цифру и 1 специальный символ
+                        и не должен содержать последовательности из 3 и более букв или цифр или входящих в "qwerty"</h6>
                     <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></p>
 
                     <input type="password" th:field="*{matchingPassword}" placeholder="повторите пароль"
