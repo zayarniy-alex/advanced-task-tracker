@@ -16,7 +16,8 @@
 <body>
     <div th:replace="~{navigation :: navigation(Home)}"/>
     <div class="content-position">
-        <h1>Комментарии</h1>
+        <h3>Комментарии</h3>
+        <hr>
         <div class="panel-body">
             <form name="addCommentForm" id="addCommentForm" th:action="@{/comments/save}"  th:object="${comment}" method="POST" class="form-horizontal">
                 <div>

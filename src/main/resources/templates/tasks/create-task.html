@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div th:replace="~{navigation :: navigation(Tasks)}"/>
+    <div th:replace="~{navigation :: navigation(AddTask)}"/>
     <div class="content-position">
         <h3>Создать задачу</h3>
         <form th:action="@{/tasks/add}" th:object="${task}" method="POST">
@@ -69,7 +69,7 @@
 				</div>
 			</div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
             </div>
         </form>
     </div>
