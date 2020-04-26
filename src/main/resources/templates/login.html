@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Вход в систему</title>
+
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div id="loginbox" class="mainbox col-md-3 col-md-offset-4 col-sm-6 col-sm-offset-4">
+
+        <div class="panel panel-info">
+
+            <div class="panel-heading">
+                <div class="panel-title">Авторизация</div>
+            </div>
+
+            <div class="panel-body">
+                <form th:action="@{/auth}" method="POST" class="form-horizontal">
+
+                    <div th:if="${message}!=null" class="form-group col-xs-15">
+                        <div class="alert alert-danger col-xs-offset-1 col-xs-10">[[${message}]]</div>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input type="text" name="username" placeholder="имя пользователя" class="form-control">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input type="password" name="password" placeholder="пароль" class="form-control">
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-success">Войти</button>
+                    <div class="input-group">
+                        <a th:href="@{/user/resetPassword}">Забыли пароль?</a>
+                    </div>
+
+                    <div class="form-group col-sm-6 controls">
+
+                        <a th:href="@{/registration}">Регистрация</a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <title>Комментарии</title>
+
+    <link rel="icon" type="image/png" th:href="@{/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div th:replace="~{navigation :: navigation(Home)}"/>
+    <div class="content-position">
+        <h3>Комментарии</h3>
+        <hr>
+        <div class="panel-body">
+            <form name="addCommentForm" id="addCommentForm" th:action="@{/comments/save}"  th:object="${comment}" method="POST" class="form-horizontal">
+                <div>
+                    <div class="form-group">
+                        <input type="hidden" name="task_id" id="task_id" placeholder="ИД объекта"  th:value="${taskIdN}" class="form-control">
+                        <span class="input-group-addon"><i class="glyphicon"></i>
+                                <span class="input-group-text">Новый комментарий</span>
+                    </span>
+                        <div class="input-group">
+                            <textarea class="form-control"  name="data" aria-label="Новый комментарий"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Добавить</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <form name="filterForm" id="filterForm" th:action="@{/comments}"  th:object="${filter}"  method="GET" class="form-horizontal">
+                <div>
+                    <div class="form-inline">
+                        <input type="hidden" name="idTask" placeholder="ИД объекта" th:value="${filter.idTask}" class="form-control">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon"></i></span>
+                            <input type="text" id="data" name="data" placeholder="Текст" class="form-control">
+                        </div>
+                        <div class="input-group">
+                            <select class="form-control" id="authorId" name="idAuthor" >
+                                <option value="0">Все</option>
+                                <option th:each="dropDownItem : ${users}"
+                                        th:value="${dropDownItem.id}"
+                                        th:text="${dropDownItem.lastname}+' '
+                                        +${dropDownItem.lastname}" />
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon"></i></span>
+                            <input type="date" id="dateFrom" name="dateFrom" placeholder="С"  th:value="${filter.dateFrom}" class="form-control">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon"></i></span>
+                            <input type="date" id="dateTill" name="dateTill" placeholder="По" th:value="${filter.dateTill}" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Фильтровать</button>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <table id="comments" class="table table-hover" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Комментарий</th>
+                    <th>Автор</th>
+                    <th>Дата создания</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="comment : ${comments}">
+                    <td th:text="${comment.data}"></td>
+                    <td th:text="${comment.user.getFirstname()}+' '+${comment.user.getLastname()}"></td>
+                    <td th:text="${#dates.format(comment.date_create, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                    <td>
+                        <a th:href="@{'/comments/'+delete(id=${comment.id})}" class="btn btn-dark" role="button" aria-pressed="true">Удалить<i class="fa fa-fw fa-trash"></i></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Уведомления</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<ul class="list-group">
+    <li th:each="item:${notifications}"
+        th:attr="class=${item.unchecked}?'list-group-item list-group-item-primary':'list-group-item list-group-item-secondary'"
+        th:utext="${item.comment}">
+    </li>
+</ul>
+
+</body>
+</html>
