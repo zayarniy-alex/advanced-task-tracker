@@ -126,10 +126,5 @@ public class UserService {
 
     }
 
-    public List<User> getUserList(){
-        List<User> listUsers=findAll();
-        return listUsers;
-    }
-
 
 }

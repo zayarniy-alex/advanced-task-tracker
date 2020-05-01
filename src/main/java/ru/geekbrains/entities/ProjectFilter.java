@@ -16,9 +16,6 @@ public class ProjectFilter {
         private Long id;
 
         public boolean isNull(){
-            if (title==null&&managerId==null&&status==null)
-                return true;
-            else
-                return false;
+            return (title==null&&managerId==null&&status==null);
         }
 }

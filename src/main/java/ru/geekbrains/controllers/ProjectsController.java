@@ -47,7 +47,6 @@ public class ProjectsController {
                                  @ModelAttribute("filter") ProjectFilter filter
     )
     {
-        model.addAttribute("activePage", "Projects");
         model.addAttribute("filter", filter);
         if (filter.isNull()){
             model.addAttribute("projects",projectService.findAll());
@@ -56,19 +55,16 @@ public class ProjectsController {
             model.addAttribute("projects",
                     projectService.findProjectFilter(filter.getManagerId(), filter.getTitle(), filter.getStatus()));
         }
-        model.addAttribute("users", userService.getUserList());
-        model.addAttribute("statuses", Project.Status.values());
+        model.addAttribute("users", userService.findAll());
         return "projects";
     }
 
     @GetMapping(value="/project/create")
     public String createProject(Model model) {
-        model.addAttribute("create", true);
-        model.addAttribute("activePage", "Projects");
         Project project=new Project();
         project.setStatus(Project.Status.CREATED);
         model.addAttribute("project", project);
-        model.addAttribute("users", userService.getUserList());
+        model.addAttribute("users", userService.findAll());
         model.addAttribute("mode", "CREATE");
         return "project";
     }
@@ -76,7 +72,6 @@ public class ProjectsController {
     @PostMapping("/project/save")
     public String save(Model model, RedirectAttributes redirectAttributes
             , @ModelAttribute("project") Project project) throws IOException {
-        model.addAttribute("activePage", "Projects");
 
         try {
             projectRepository.save(project);
@@ -88,7 +83,6 @@ public class ProjectsController {
 
     @GetMapping(value="/project/delete")
     public String deleteDocument(Model model, @RequestParam("id") Long id) {
-        model.addAttribute("activePage", "Projects");
         projectRepository.deleteById(id);
         return "redirect:/projects";
     }
@@ -97,7 +91,7 @@ public class ProjectsController {
     public String editProject(Model model, @RequestParam(name = "id") Long id) throws Exception {
         Project project=projectService.findById(id);
         model.addAttribute("project", project);
-        model.addAttribute("users", userService.getUserList());
+        model.addAttribute("users", userService.findAll());
         model.addAttribute("mode", "EDIT");
         return "project";
     }
@@ -106,7 +100,7 @@ public class ProjectsController {
     public String viewProject(Model model, @RequestParam(name = "id") Long id) throws Exception {
         Project project=projectService.findById(id);
         model.addAttribute("project", project);
-        model.addAttribute("users", userService.getUserList());
+        model.addAttribute("users", userService.findAll());
         model.addAttribute("mode", "VIEW");
         return "project";
     }
