@@ -42,7 +42,7 @@
                                 <label for="status">Статус</label>
                                 <select class="form-control" id="status" name="status">
                                     <option value="">Все</option>
-                                    <option th:each="status : ${statuses}"
+                                    <option th:each="status : ${T(ru.geekbrains.entities.Project.Status).values()}"
                                             th:value="${status}"
                                             th:text="${status.getCode()}">
                                     </option>
