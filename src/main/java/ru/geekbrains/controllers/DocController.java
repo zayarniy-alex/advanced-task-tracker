@@ -32,7 +32,6 @@ public class DocController {
     public String docsPage(Model model,
                            @RequestParam("objId") Long idObject, @RequestParam("objType") String typeObject,@RequestParam("mode") String mode)
     {
-        model.addAttribute("activePage", "Documents");
         model.addAttribute("objId",idObject);
         model.addAttribute("objType",typeObject);
         model.addAttribute("docs", documentRepository.findByObject(typeObject,idObject));
@@ -47,7 +46,6 @@ public class DocController {
                              @ModelAttribute("filter") DocFilter filter
     )
     {
-        model.addAttribute("activePage", "Documents");
         filter.setTypeObject(localFilter.getTypeObject());
         filter.setIdObject(localFilter.getIdObject());
         if (filter.getDescription().isEmpty())
@@ -71,16 +69,14 @@ public class DocController {
     }
 
     @GetMapping(value="/document/delete")
-    public String deleteDocument(Model model, @RequestParam("id") Long id) {
-        model.addAttribute("activePage", "Documents");
+    public String deleteDocument(@RequestParam("id") Long id) {
         Document document=documentRepository.findById(id).get();
         documentRepository.deleteById(id);
         return "redirect:/documents?objId="+document.getObject_id()+"&objType="+document.getObject_type()+"&mode=EDIT";
     }
 
     @GetMapping(value="/document/open")
-    public ResponseEntity<byte[]> openDocument(Model model, @RequestParam("id") Long id) {
-        model.addAttribute("activePage", "Documents");
+    public ResponseEntity<byte[]> openDocument(@RequestParam("id") Long id) {
         Document document=documentRepository.findById(id).get();
         byte[] data=document.getData();
         try(FileOutputStream fos=new FileOutputStream(document.getTitle()))
@@ -102,7 +98,8 @@ public class DocController {
     }
 
     @PostMapping("/document/save")
-    public String saveDocument(Model model, RedirectAttributes redirectAttributes, Document document, @RequestParam("fileData") MultipartFile file) throws IOException {
+    public String saveDocument(Model model,
+                               RedirectAttributes redirectAttributes, Document document, @RequestParam("fileData") MultipartFile file) throws IOException {
         model.addAttribute("activePage", "Documents");
         model.addAttribute("objId",document.getObject_id());
         model.addAttribute("objType",document.getObject_type());

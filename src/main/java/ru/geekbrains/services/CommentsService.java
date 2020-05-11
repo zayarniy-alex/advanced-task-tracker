@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.entities.Comment;
 import ru.geekbrains.entities.CommentFilter;
-import ru.geekbrains.entities.User;
 import ru.geekbrains.repositories.CommentRepository;
 
 import java.security.Principal;
@@ -52,6 +51,8 @@ public class CommentsService {
         if (localFilter.getData() == null)
             localFilter.setData(null);
         else
+
+
         if (localFilter.getData().isEmpty()) {
             localFilter.setData(null);
         }

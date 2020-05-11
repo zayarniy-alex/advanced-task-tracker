@@ -34,17 +34,10 @@ public class ProjectService {
         localFilter.setManagerId(manager_id);
         localFilter.setStatus(status);
         localFilter.setTitle(title);
-        if (localFilter.getManagerId()==null)
-            localFilter.setManagerId(0L);
 
-        if (localFilter.getTitle() == null)
-            localFilter.setTitle(null);
-        else
-        if (localFilter.getTitle().isEmpty()) {
-            localFilter.setTitle(null);
-        }
-        if (localFilter.getStatus() == null)
-            localFilter.setStatus(null);
+        if (localFilter.getTitle().equals(""))
+            localFilter.setTitle("%");
+
         return projectRepository.findProjectByFilter(localFilter.getManagerId(),localFilter.getTitle(),localFilter.getStatus());
     }
 

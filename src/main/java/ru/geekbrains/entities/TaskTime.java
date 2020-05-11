@@ -6,6 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +24,9 @@ public class TaskTime {
     @Column (name = "id")
     private Long id;
 
+
+    private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     @Column (name = "task_id")
     private Long task_id;
 
@@ -29,15 +34,18 @@ public class TaskTime {
     private Long user_id;
 
     @Column (name = "date_start")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date_start;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime date_start;
 
     @Column (name = "date_finish")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date  date_finish;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime date_finish;
 
     @Column (name = "time_elapsed")
     private double time_elapsed;
+
+    @Column (name = "comment")
+    private String comment;
 
     @OneToOne
     @JoinColumn(name = "user_id", insertable=false, updatable=false)

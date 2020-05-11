@@ -7,11 +7,14 @@ import ru.geekbrains.entities.TaskTimeFilter;
 import ru.geekbrains.repositories.TasksTimeRepository;
 
 import java.security.Principal;
+import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 @Service
 public class TaskTimeService {
@@ -41,25 +44,19 @@ public class TaskTimeService {
         if (taskTime.getTime_elapsed()==0.0&&taskTime.getDate_start()!=null
            &&taskTime.getDate_finish()!=null
         ){
-            taskTime.setTime_elapsed(
-                    (TimeUnit.DAYS.convert(
-                            (taskTime.getDate_finish().getTime() -
-                            taskTime.getDate_start().getTime())
-                            , TimeUnit.MILLISECONDS)+1)*8);
+            taskTime.setTime_elapsed((Duration.between(taskTime.getDate_start(),
+                    taskTime.getDate_finish()).toDays()+1)*8);
+
         }
         else {
             if (taskTime.getDate_start() == null)
-                taskTime.setDate_start(new Date());
-
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(taskTime.getDate_start());
-            cal.add(Calendar.HOUR_OF_DAY, (int) taskTime.getTime_elapsed());
-            cal.getTime();
+                taskTime.setDate_start(LocalDateTime.now());
 
             if (taskTime.getDate_finish() == null)
-                taskTime.setDate_finish(cal.getTime());
+            taskTime.setDate_finish(taskTime.getDate_start().plusHours(
+                    (long)
+                    taskTime.getTime_elapsed()));
         }
-
 
         taskTime.setUser_id(userService.getUser(principal.getName()).getId());
         return tasksTimeRepository.save(taskTime);
@@ -73,13 +70,13 @@ public class TaskTimeService {
             localFilter.setUserId(0L);
 
         if (localFilter.getDateStart()==null){
-            LocalDate date =  LocalDate.now().minusDays(30);
-            localFilter.setDateStart(java.sql.Date.valueOf(date));
-
+            localFilter.setDateStart(LocalDateTime.now().minusDays(30).truncatedTo(MINUTES));
         }
+
+        System.out.println(localFilter.getDateStart());
+
         if (localFilter.getDateFinish()==null){
-            LocalDate date =  LocalDate.now().plusDays(1);
-            localFilter.setDateFinish(java.sql.Date.valueOf(date));
+            localFilter.setDateFinish(LocalDateTime.now().plusDays(1).truncatedTo(MINUTES));
         }
 
         List<TaskTime> list=tasksTimeRepository.findByFilter(localFilter.getIdTask(),

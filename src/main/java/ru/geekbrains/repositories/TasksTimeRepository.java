@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.geekbrains.entities.TaskTime;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +17,8 @@ public interface TasksTimeRepository extends JpaRepository<TaskTime, Long> {
             " and (t.date_start between :date_start and :date_finish)" +
             " order by t.date_start desc")
     List<TaskTime> findByFilter(@Param("task_id") Long id,
-                                @Param("date_start") Date dateStart,
-                                @Param("date_finish") Date dateFinish
+                                @Param("date_start") LocalDateTime dateStart,
+                                @Param("date_finish") LocalDateTime dateFinish
 
     );
 

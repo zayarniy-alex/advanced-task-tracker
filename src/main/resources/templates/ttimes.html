@@ -14,32 +14,50 @@
 <body>
     <div th:replace="~{navigation :: navigation(Home)}"/>
     <div class="content-position">
-        <h3>Статистика</h3>
-        <hr>
+        <h3 th:text="'Статистика по задаче '+${taskIdN}"></h3>
+        <hr>`
+
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Списать время
+        </button>
+
+        <div class="collapse mt-2" id="collapseExample">
+
+
         <form name="addTimeForm" id="addTimeForm" th:action="@{/ttime/save}"  th:object="${ttime}" method="POST" class="form-horizontal">
+            <div class="col form-group">
             <div class="form-row">
                     <input type="hidden" name="task_id" id="task_id" placeholder="ИД объекта"  th:value="${taskIdN}" class="form-control">
                     <div class="col form-group">
                         <label for="dateStart">Дата С</label>
                         <span class="input-group-addon"><i class="glyphicon"></i></span>
-                        <input type="date" id="date_start" name="date_start" placeholder="С"  class="form-control">
+                        <input type="datetime-local" id="date_start" name="date_start" placeholder="С"  class="form-control">
                     </div>
                     <div class="col form-group">
                         <label for="dateFinish">Дата По</label>
                         <span class="input-group-addon"><i class="glyphicon"></i></span>
-                        <input type="date" id="date_finish" name="date_finish" placeholder="По" class="form-control">
+                        <input type="datetime-local" id="date_finish" name="date_finish" placeholder="По" class="form-control">
                     </div>
                     <div class="col form-group">
                         <label for="dateFinish">Время</label>
                         <span class="input-group-addon"><i class="glyphicon"></i></span>
                         <input type="number" id="time_elapsed" name="time_elapsed" th:value="0" placeholder="Время"  class="form-control">
                     </div>
+            </div>
+            <div class="form-row">
+                    <div class="col-10 form-group">
+                        <label for="comment">Комментарий</label>
+                        <span class="input-group-addon"><i class="glyphicon"></i></span>
+                        <textarea class="form-control"  id="comment" name="comment" aria-label="Комментарий"></textarea>
+                    </div>
                     <div class="col form-group">
                         <label for="add-btn" class="invisible">Добавить</label><br>
-                        <button type="submit" class="btn btn-primary" id="add-btn">Добавить</button>
+                        <button type="submit" class="btn btn-primary mt-2" id="add-btn">Добавить</button>
                     </div>
                 </div>
+            </div>
         </form>
+        </div>
 
         <hr>
 
@@ -52,12 +70,12 @@
                                 <div class="col form-group">
                                     <label for="dateStart">Дата С</label>
                                     <span class="input-group-addon"><i class="glyphicon"></i></span>
-                                    <input type="date" id="dateStart" name="dateStart" placeholder="С"  th:value="${filter.dateStart}" class="form-control">
+                                    <input type="datetime-local" th:text="${#temporals.formatISO(localDateTime)}" id="dateStart" name="dateStart" placeholder="С"  th:value="${filter.dateStart}" class="form-control">
                                 </div>
                                 <div class="col form-group">
                                     <label for="dateFinish">Дата По</label>
                                     <span class="input-group-addon"><i class="glyphicon"></i></span>
-                                    <input type="date" id="dateFinish" name="dateFinish" placeholder="По" th:value="${filter.dateFinish}" class="form-control">
+                                    <input type="datetime-local" id="dateFinish" name="dateFinish" placeholder="По" th:value="${filter.dateFinish}" class="form-control">
                                 </div>
                                 <div class="col form-group">
                                     <label for="fltr-btn" class="invisible">Фильтровать</label><br>
@@ -77,6 +95,7 @@
                                     <span th:text="${#aggregates.sum(taskTime.?[time_elapsed != null].![time_elapsed])}"></span>
                                     (ч)
                                 </th>
+                                <th>Комментарий</th>
                                 <th>Автор</th>
                                 <th>Действие</th>
                             </tr>
@@ -84,9 +103,10 @@
                             <tbody>
                             <tr th:each="tti : ${taskTime}">
                                 <td th:text="${tti.id}"></td>
-                                <td th:text="${#dates.format(tti.date_start, 'dd-MM-yyyy')}"></td>
-                                <td th:text="${#dates.format(tti.date_finish, 'dd-MM-yyyy')}"></td>
+                                <td th:text="${#temporals.format(tti.date_start, 'dd-MM-yyyy HH:mm')}"></td>
+                                <td th:text="${#temporals.format(tti.date_finish, 'dd-MM-yyyy HH:mm')}"></td>
                                 <td th:text="${tti.time_elapsed}"></td>
+                                <td th:text="${tti.comment}"></td>
                                 <td th:text="${tti.user.getFirstname()}+' '+${tti.user.getLastname()}"></td>
                                 <td>
                                     <a th:href="@{'/ttime/'+delete(id=${tti.id})}">Удаление</a>

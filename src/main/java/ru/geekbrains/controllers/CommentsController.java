@@ -45,7 +45,6 @@ public class CommentsController {
                                  @ModelAttribute("filter") CommentFilter filter
     )
     {
-        model.addAttribute("activePage", "Comments");
         model.addAttribute("filter", filter);
         model.addAttribute("comments", commentsService.getCommentsFilter(filter));
         model.addAttribute("users", userService.findAll());
@@ -54,22 +53,20 @@ public class CommentsController {
     }
 
     @GetMapping(value="/comments/delete")
-    public void delete(Model model, @RequestParam("id") Long id
+    public void delete(@RequestParam("id") Long id
             , HttpServletRequest request, HttpServletResponse response
     ) throws IOException {
-        model.addAttribute("activePage", "Comments");
         Comment comment=commentRepository.findById(id).get();
         commentRepository.deleteById(id);
         response.sendRedirect(request.getHeader("referer"));
     }
 
     @PostMapping("/comments/save")
-    public void save(Model model, RedirectAttributes redirectAttributes
+    public void save(RedirectAttributes redirectAttributes
             , Principal principal,
                      @ModelAttribute("comment") Comment comment
             , HttpServletRequest request, HttpServletResponse response
     ) throws IOException {
-        model.addAttribute("activePage", "Comments");
         try {
             commentsService.save(comment,principal);
         } catch (Exception ex) {
